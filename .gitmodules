@@ -1,0 +1,3 @@
+[submodule "modules/chirpstack-api"]
+	path = modules/chirpstack-api
+	url = https://github.com/brocaar/chirpstack-api
