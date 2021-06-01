@@ -114,10 +114,28 @@ target_link_libraries(chirpstack_grpc_proto
         ${_REFLECTION}
         ${_GRPC_GRPCPP})
 
-# Create simulator target
-add_executable(simulator src/simulator.cc)
-target_link_libraries(simulator
+# Include chirpstack_client directory
+include_directories("include")
+
+# Create chirpstack_client target
+set(chirpstack_client_srcs
+        "src/chirpstack_client.cc")
+set(chirpstack_client_hdrs
+        "include/chirpstack_client/chirpstack_client.h"
+        "include/chirpstack_client/data_types.h")
+add_library(chirpstack_client
+        ${chirpstack_client_srcs}
+        ${chirpstack_client_hdrs})
+target_link_libraries(chirpstack_client
         chirpstack_grpc_proto
+        ${_PROTOBUF_LIBPROTOBUF}
+        ${_REFLECTION}
+        ${_GRPC_GRPCPP})
+
+# Create simulator target
+add_executable(simulator test/simulator.cc)
+target_link_libraries(simulator
+        chirpstack_client
         ${_PROTOBUF_LIBPROTOBUF}
         ${_REFLECTION}
         ${_GRPC_GRPCPP})
