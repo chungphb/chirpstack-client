@@ -97,7 +97,7 @@ foreach(chirpstack_proto ${chirpstack_protos})
 endforeach()
 
 # Include binary directory
-include_directories("${CMAKE_CURRENT_BINARY_DIR}")
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 # Create chirpstack_grpc_proto target
 add_library(chirpstack_grpc_proto
@@ -131,6 +131,8 @@ target_link_libraries(chirpstack_client
         ${_PROTOBUF_LIBPROTOBUF}
         ${_REFLECTION}
         ${_GRPC_GRPCPP})
+target_include_directories(chirpstack_client
+        PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 
 # Create simulator target
 add_executable(simulator test/simulator.cc)

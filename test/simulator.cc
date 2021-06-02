@@ -1,6 +1,7 @@
 #include <chirpstack_client/chirpstack_client.h>
-#include <grpc++/grpc++.h>
 #include <iostream>
+
+using namespace chirpstack_cpp_client;
 
 namespace simulator {
 const char* JWT_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiYmExOTUyNDctMGM4YS00ZDNkLThiODEtMjQwNj"
@@ -14,7 +15,7 @@ const char* DEVICE_EUI = "0005010201090906";
 const char* NWK_KEY = "00000000000000000000000000000000";
 const char* APP_KEY = "00000000000000000000000000000000";
 
-chirpstack_client::get_service_profile_request generate_get_service_profile_request() {
+get_service_profile_request generate_get_service_profile_request() {
     api::GetServiceProfileRequest request;
     // Set service-profile ID
     request.set_id(SERVICE_PROFILE_ID);
@@ -22,7 +23,7 @@ chirpstack_client::get_service_profile_request generate_get_service_profile_requ
     return request;
 }
 
-chirpstack_client::create_gateway_request generate_create_gateway_request(const api::ServiceProfile& service_profile) {
+create_gateway_request generate_create_gateway_request(const api::ServiceProfile& service_profile) {
     api::CreateGatewayRequest request;
     // Set gateway object to create
     api::Gateway* gateway = request.mutable_gateway();
@@ -49,7 +50,7 @@ chirpstack_client::create_gateway_request generate_create_gateway_request(const 
     return request;
 }
 
-chirpstack_client::create_device_profile_request generate_create_device_profile_request(const api::ServiceProfile& service_profile) {
+create_device_profile_request generate_create_device_profile_request(const api::ServiceProfile& service_profile) {
     api::CreateDeviceProfileRequest request;
     // Set device-profile object to create
     api::DeviceProfile* device_profile = request.mutable_device_profile();
@@ -69,7 +70,7 @@ chirpstack_client::create_device_profile_request generate_create_device_profile_
     return request;
 }
 
-chirpstack_client::create_application_request generate_create_application_request(const api::ServiceProfile& service_profile) {
+create_application_request generate_create_application_request(const api::ServiceProfile& service_profile) {
     api::CreateApplicationRequest request;
     // Set application object to create
     api::Application* application = request.mutable_application();
@@ -85,7 +86,7 @@ chirpstack_client::create_application_request generate_create_application_reques
     return request;
 }
 
-chirpstack_client::create_device_request generate_create_device_request(int64_t application_id, const std::string& device_profile_id) {
+create_device_request generate_create_device_request(int64_t application_id, const std::string& device_profile_id) {
     api::CreateDeviceRequest request;
     // Set device object to create
     api::Device* device = request.mutable_device();
@@ -103,7 +104,7 @@ chirpstack_client::create_device_request generate_create_device_request(int64_t 
     return request;
 }
 
-chirpstack_client::create_device_keys_request generate_create_device_keys_request() {
+create_device_keys_request generate_create_device_keys_request() {
     api::CreateDeviceKeysRequest request;
     // Set device-keys object to create
     api::DeviceKeys* device_keys = request.mutable_device_keys();
@@ -118,9 +119,9 @@ chirpstack_client::create_device_keys_request generate_create_device_keys_reques
 }
 
 int main(int argc, char** argv) {
-    chirpstack_client::chirpstack_client_config client_config{};
+    chirpstack_client_config client_config{};
     client_config.jwt_token = simulator::JWT_TOKEN;
-    chirpstack_client::chirpstack_client client{"localhost:8080", client_config};
+    chirpstack_client client{"localhost:8080", client_config};
 
     // Get service profile
     auto get_service_profile_request = simulator::generate_get_service_profile_request();
