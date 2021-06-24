@@ -1,4 +1,4 @@
-foreach(target_var application device device_profile simulator)
+foreach(target_var application device device_profile gateway_profile simulator)
     add_executable("${target_var}_test" "${target_var}_test.cc" test_config.h)
     target_link_libraries("${target_var}_test"
             chirpstack_client
