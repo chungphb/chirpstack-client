@@ -10,7 +10,7 @@ struct test_cache {
     int64_t application_id;
     api::Device device;
     api::DeviceKeys device_keys;
-    std::string device_address;
+    api::DeviceActivation device_activation;
 };
 
 void get_service_profile(chirpstack_client& client, test_cache& cache) {
@@ -69,7 +69,7 @@ void create_device_profile(chirpstack_client& client, test_cache& cache) {
     request.mutable_device_profile()->set_network_server_id(cache.service_profile.network_server_id());
     request.mutable_device_profile()->set_mac_version("1.0.3");
     request.mutable_device_profile()->set_reg_params_revision("B");
-    request.mutable_device_profile()->set_supports_join(true);
+    request.mutable_device_profile()->set_supports_join(false);
 
     // Send request
     auto response = client.create_device_profile(request);
@@ -252,6 +252,61 @@ void test_delete_device_keys(chirpstack_client& client, test_cache& cache) {
     }
 }
 
+void test_activate_device(chirpstack_client& client, test_cache& cache) {
+    // Prepare request
+    activate_device_request request;
+    request.mutable_device_activation()->set_dev_eui(DEVICE_EUI);
+    request.mutable_device_activation()->set_dev_addr(DEVICE_ADDRESS);
+    request.mutable_device_activation()->set_app_s_key(APP_S_KEY);
+    request.mutable_device_activation()->set_nwk_s_enc_key(NWK_S_ENC_KEY);
+    request.mutable_device_activation()->set_s_nwk_s_int_key(S_NWK_INT_KEY);
+    request.mutable_device_activation()->set_f_nwk_s_int_key(F_NWK_INT_KEY);
+
+    // Send request
+    auto response = client.activate_device(request);
+    if (!response.is_valid()) {
+        std::cerr << "Failed to activate device: " << response.error_code() << std::endl;
+        exit(EXIT_FAILURE);
+    }
+}
+
+void test_deactivate_device(chirpstack_client& client, test_cache& cache) {
+    // Prepare request
+    deactivate_device_request request;
+    request.set_dev_eui(DEVICE_EUI);
+
+    // Send request
+    auto response = client.deactivate_device(request);
+    if (!response.is_valid()) {
+        std::cerr << "Failed to deactivate device: " << response.error_code() << std::endl;
+        exit(EXIT_FAILURE);
+    }
+}
+
+void test_get_device_activation(chirpstack_client& client, test_cache& cache) {
+    // Prepare request
+    get_device_activation_request request;
+    request.set_dev_eui(DEVICE_EUI);
+
+    // Send request
+    auto response = client.get_device_activation(request);
+    if (!response.is_valid()) {
+        std::cerr << "Failed to get device activation: " << response.error_code() << std::endl;
+        exit(EXIT_FAILURE);
+    }
+
+    // Save response
+    cache.device_activation = response.get().device_activation();
+
+    // Display response
+    std::cout << "\tDevice " << cache.device_activation.dev_eui() << "\'s activation" << std::endl;
+    std::cout << "\t\tDevice address: " << cache.device_activation.dev_addr() << std::endl;
+    std::cout << "\t\tApplication session key: " << cache.device_activation.app_s_key() << std::endl;
+    std::cout << "\t\tNetwork session encryption key: " << cache.device_activation.nwk_s_enc_key() << std::endl;
+    std::cout << "\t\tServing network session integrity key: " << cache.device_activation.s_nwk_s_int_key()  << std::endl;
+    std::cout << "\t\tForwarding network session integrity key: " << cache.device_activation.f_nwk_s_int_key() << std::endl;
+}
+
 void test_get_random_dev_addr(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     get_random_dev_addr_request request;
@@ -264,11 +319,58 @@ void test_get_random_dev_addr(chirpstack_client& client, test_cache& cache) {
         exit(EXIT_FAILURE);
     }
 
-    // Save response
-    cache.device_address = response.get().dev_addr();
+    // Display response
+    std::cout << "\tA random address of device " << cache.device.dev_eui() << ": " << response.get().dev_addr() << std::endl;
+}
+
+void test_enqueue_device_queue_item(chirpstack_client& client, test_cache& cache) {
+    // Prepare request
+    enqueue_device_queue_item_request request;
+    request.mutable_device_queue_item()->set_dev_eui(DEVICE_EUI);
+    request.mutable_device_queue_item()->set_confirmed(false);
+    request.mutable_device_queue_item()->set_f_port(F_PORT);
+    request.mutable_device_queue_item()->set_data(PAYLOAD);
+
+    // Send request
+    auto response = client.enqueue_device_queue_item(request);
+    if (!response.is_valid()) {
+        std::cerr << "Failed to enqueue device queue item: " << response.error_code() << std::endl;
+        exit(EXIT_FAILURE);
+    }
+}
+
+void test_flush_device_queue(chirpstack_client& client, test_cache& cache) {
+    // Prepare request
+    flush_device_queue_request request;
+    request.set_dev_eui(DEVICE_EUI);
+
+    // Send request
+    auto response = client.flush_device_queue(request);
+    if (!response.is_valid()) {
+        std::cerr << "Failed to flush device queue: " << response.error_code() << std::endl;
+        exit(EXIT_FAILURE);
+    }
+}
+
+void test_list_device_queue_items(chirpstack_client& client, test_cache& cache) {
+    // Prepare request
+    list_device_queue_items_request request;
+    request.set_dev_eui(DEVICE_EUI);
+
+    // Send request
+    auto response = client.list_device_queue_items(request);
+    if (!response.is_valid()) {
+        std::cerr << "Failed to list device queue items: " << response.error_code() << std::endl;
+        exit(EXIT_FAILURE);
+    }
 
     // Display response
-    std::cout << "\tDevice " << cache.device.dev_eui() << "\'s address is " << cache.device_address << std::endl;
+    for (const auto& device_queue_item : response.get().device_queue_items()) {
+        std::cout << "\tQueue item #" << device_queue_item.f_cnt() << std::endl;
+        std::cout << "\t\tConfirmed: " << std::boolalpha << device_queue_item.confirmed() << std::endl;
+        std::cout << "\t\tF-Port: " << device_queue_item.f_port() << std::endl;
+        std::cout << "\t\tData: " << device_queue_item.data() << std::endl;
+    }
 }
 
 int main(int argc, char** argv) {
@@ -298,6 +400,9 @@ int main(int argc, char** argv) {
     std::cout << "TEST LIST DEVICE" << std::endl;
     test_list_device(client, cache);
 
+    std::cout << "TEST GET RANDOM DEVICE ADDRESS" << std::endl;
+    test_get_random_dev_addr(client, cache);
+
     std::cout << "TEST CREATE DEVICE-KEYS" << std::endl;
     test_create_device_keys(client, cache);
 
@@ -307,11 +412,23 @@ int main(int argc, char** argv) {
     std::cout << "TEST UPDATE DEVICE-KEYS" << std::endl;
     test_update_device_keys(client, cache);
 
+    std::cout << "TEST ACTIVATE DEVICE" << std::endl;
+    test_activate_device(client, cache);
+
+    std::cout << "TEST GET DEVICE ACTIVATION" << std::endl;
+    test_get_device_activation(client, cache);
+
+    std::cout << "TEST ENQUEUE DEVICE QUEUE ITEM" << std::endl;
+    test_enqueue_device_queue_item(client, cache);
+
+    std::cout << "TEST LIST DEVICE QUEUE ITEMS" << std::endl;
+    test_list_device_queue_items(client, cache);
+
+    std::cout << "TEST FLUSH DEVICE QUEUE" << std::endl;
+    test_flush_device_queue(client, cache);
+
     std::cout << "TEST DELETE DEVICE-KEYS" << std::endl;
     test_delete_device_keys(client, cache);
-
-    std::cout << "TEST GET RANDOM DEVICE ADDRESS" << std::endl;
-    test_get_random_dev_addr(client, cache);
 
     std::cout << "TEST DELETE DEVICE" << std::endl;
     test_delete_device(client, cache);

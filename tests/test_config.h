@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 const char* JWT_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiMWZmZTRjYzgtODMwZi00MGM0LTlhMzAtYTE5Nz"
                         "dkNjU2N2MyIiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTYyMzc1NDQzMSwic3ViIjoiYXBpX2tleSJ9.f--PhXYG"
                         "c61Kq_eMdf-ofxX8RUmNCDmtP9mauhzpq7k";
@@ -15,3 +17,10 @@ const char* APPLICATION_NAME = "sample-application";
 const char* DEVICE_EUI = "0001020304050607";
 const char* NWK_KEY = "000102030405060708090a0b0c0d0e0f";
 const char* APP_KEY = "000102030405060708090a0b0c0d0e0f";
+const char* DEVICE_ADDRESS = "00010203";
+const char* APP_S_KEY = "000102030405060708090a0b0c0d0e0f";
+const char* NWK_S_ENC_KEY = "000102030405060708090a0b0c0d0e0f";
+const char* S_NWK_INT_KEY = "000102030405060708090a0b0c0d0e0f";
+const char* F_NWK_INT_KEY = "000102030405060708090a0b0c0d0e0f";
+const uint32_t F_PORT = 10;
+const char* PAYLOAD = "packet_1234";
