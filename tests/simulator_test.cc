@@ -1,19 +1,10 @@
+#include "test_config.h"
 #include <chirpstack_client/chirpstack_client.h>
 #include <iostream>
 
 using namespace chirpstack_cpp_client;
 
 namespace simulator {
-const char* JWT_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiYmExOTUyNDctMGM4YS00ZDNkLThiODEtMjQwNj"
-                        "ZlNDg3NzYzIiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTYyMTUyODcxMiwic3ViIjoiYXBpX2tleSJ9.GokacHKp"
-                        "2iMHge2U6Ml_17fwYBkuIvFH4R6UGLytvxA";
-const char* SERVICE_PROFILE_ID  = "76b0bff0-7f2c-46b1-abed-c594f68ec643";
-const char* GATEWAY_ID = "0205010001090906";
-const char* DEVICE_PROFILE_NAME = "dddddddd-dddd-dddd-dddd-dddddddddddd";
-const char* APPLICATION_NAME = "aaaaaaaa-aaaa-aaaa-aaaaaaaaaaaa";
-const char* DEVICE_EUI = "0005010201090906";
-const char* NWK_KEY = "00000000000000000000000000000000";
-const char* APP_KEY = "00000000000000000000000000000000";
 
 get_service_profile_request generate_get_service_profile_request() {
     api::GetServiceProfileRequest request;
@@ -120,7 +111,7 @@ create_device_keys_request generate_create_device_keys_request() {
 
 int main(int argc, char** argv) {
     chirpstack_client_config client_config{};
-    client_config.jwt_token = simulator::JWT_TOKEN;
+    client_config.jwt_token = JWT_TOKEN;
     chirpstack_client client{"localhost:8080", client_config};
 
     // Get service profile

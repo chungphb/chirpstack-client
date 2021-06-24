@@ -4,6 +4,9 @@ project(basic_grpc)
 # Support C++ 14
 set(CMAKE_CXX_STANDARD 14)
 
+## Enable testing targets
+option(ChirpStackClient_TESTING "Enable testing targets" ON)
+
 # Find Threads package
 find_package(Threads)
 
@@ -122,7 +125,7 @@ set(chirpstack_client_srcs
         "src/chirpstack_client.cc")
 set(chirpstack_client_hdrs
         "include/chirpstack_client/chirpstack_client.h"
-        "include/chirpstack_client/data_types.h")
+        "include/chirpstack_client/messages.h")
 add_library(chirpstack_client
         ${chirpstack_client_srcs}
         ${chirpstack_client_hdrs})
@@ -134,10 +137,6 @@ target_link_libraries(chirpstack_client
 target_include_directories(chirpstack_client
         PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 
-# Create simulator target
-add_executable(simulator test/simulator.cc)
-target_link_libraries(simulator
-        chirpstack_client
-        ${_PROTOBUF_LIBPROTOBUF}
-        ${_REFLECTION}
-        ${_GRPC_GRPCPP})
+if (ChirpStackClient_TESTING)
+    add_subdirectory(tests)
+endif()

@@ -4,6 +4,9 @@
 
 #include <chirpstack_client/chirpstack_client.h>
 
+using namespace api;
+using namespace grpc;
+
 namespace chirpstack_cpp_client {
 
 chirpstack_client::chirpstack_client(const std::string& server_address, chirpstack_client_config config) {

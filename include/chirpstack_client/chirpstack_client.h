@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <chirpstack_client/data_types.h>
+#include <chirpstack_client/messages.h>
 #include <as/external/api/application.grpc.pb.h>
 #include <as/external/api/device.grpc.pb.h>
 #include <as/external/api/deviceProfile.grpc.pb.h>
@@ -23,9 +23,6 @@
 #include <memory>
 
 namespace chirpstack_cpp_client {
-
-using namespace grpc;
-using namespace api;
 
 struct chirpstack_client_config {
     std::string jwt_token;
@@ -147,19 +144,19 @@ public:
 
 private:
     chirpstack_client_config _config;
-    std::shared_ptr<Channel> _channel;
-    std::unique_ptr<ApplicationService::Stub> _application_service_stub;
-    std::unique_ptr<DeviceService::Stub> _device_service_stub;
-    std::unique_ptr<DeviceProfileService::Stub> _device_profile_service_stub;
-    std::unique_ptr<DeviceQueueService::Stub> _device_queue_service_stub;
-    std::unique_ptr<GatewayService::Stub> _gateway_service_stub;
-    std::unique_ptr<GatewayProfileService::Stub> _gateway_profile_service_stub;
-    std::unique_ptr<InternalService::Stub> _internal_service_stub;
-    std::unique_ptr<MulticastGroupService::Stub> _multicast_group_service_stub;
-    std::unique_ptr<NetworkServerService::Stub> _network_server_service_stub;
-    std::unique_ptr<OrganizationService::Stub> _organization_service_stub;
-    std::unique_ptr<ServiceProfileService::Stub> _service_profile_service_stub;
-    std::unique_ptr<UserService::Stub> _user_service_stub;
+    std::shared_ptr<grpc::Channel> _channel;
+    std::unique_ptr<api::ApplicationService::Stub> _application_service_stub;
+    std::unique_ptr<api::DeviceService::Stub> _device_service_stub;
+    std::unique_ptr<api::DeviceProfileService::Stub> _device_profile_service_stub;
+    std::unique_ptr<api::DeviceQueueService::Stub> _device_queue_service_stub;
+    std::unique_ptr<api::GatewayService::Stub> _gateway_service_stub;
+    std::unique_ptr<api::GatewayProfileService::Stub> _gateway_profile_service_stub;
+    std::unique_ptr<api::InternalService::Stub> _internal_service_stub;
+    std::unique_ptr<api::MulticastGroupService::Stub> _multicast_group_service_stub;
+    std::unique_ptr<api::NetworkServerService::Stub> _network_server_service_stub;
+    std::unique_ptr<api::OrganizationService::Stub> _organization_service_stub;
+    std::unique_ptr<api::ServiceProfileService::Stub> _service_profile_service_stub;
+    std::unique_ptr<api::UserService::Stub> _user_service_stub;
 };
 
 }
