@@ -33,3 +33,5 @@ const char* GLOBAL_JWT_TOKEN =
 const uint32_t FREQUENCY = 900000000;
 const uint32_t BANDWIDTH = 125;
 const uint32_t SPREADING_FACTORS[] = {7, 8, 9, 10, 11, 12};
+const char* USER = "sample@user.com";
+const char* PASSWORD = "password";
