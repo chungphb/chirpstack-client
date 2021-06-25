@@ -892,6 +892,7 @@ add_organization_user_response chirpstack_client::add_organization_user(const ad
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _organization_service_stub->AddUser(&context, request, &response);
     if (!status.ok()) {
+        printf("%s\n", status.error_message().c_str());
         return add_organization_user_response{status.error_code()};
     } else {
         return add_organization_user_response{std::move(response)};
