@@ -39,3 +39,4 @@ const char* ORGANIZATION_NAME = "sample-organization";
 const char* ORGANIZATION_DISPLAY_NAME = "Sample Organization";
 const char* NETWORK_SERVER_NAME = "sample-network-server";
 const char* NETWORK_SERVER_SERVER = "0.0.0.0:8500";
+const char* SERVICE_PROFILE_NAME = "sample-service-profile";
