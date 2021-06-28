@@ -8,9 +8,9 @@
 
 const char* APPLICATION_SERVER = "localhost:8080";
 const char* JWT_TOKEN =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiM2ZlYTM2NjQtNWE0Ni00NjIxLTg4MjE"
-        "tNDQ2ZGZkZDJkM2ZlIiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTYyNDY0NjE1NSwic3ViIjoiYXBpX2t"
-        "leSJ9.UVmIzufEsLL78QDhGJI1tLig4VmS4al-nsJuVllMEtA";
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiMWZmZTRjYzgtODMwZi00MGM0LTlhMzAtYTE5Nz"
+        "dkNjU2N2MyIiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTYyMzc1NDQzMSwic3ViIjoiYXBpX2tleSJ9.f--PhXYG"
+        "c61Kq_eMdf-ofxX8RUmNCDmtP9mauhzpq7k";
 const char* SERVICE_PROFILE_ID = "a3bdf1e5-7d10-4191-8f70-5cf7d446a0b2";
 const char* APPLICATION_NAME = "sample-application";
 const char* DEVICE_PROFILE_NAME = "sample-device-profile";
@@ -27,9 +27,9 @@ const uint32_t F_PORT = 10;
 const char* PAYLOAD = "packet_1234";
 const char* GATEWAY_ID = "0001020304050607";
 const char* GLOBAL_JWT_TOKEN =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiNDVlMjViZDMtZTIzOC00YWJhLWE0YWI"
-        "tNTEyOWM2OTA0YWJmIiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTYyNDY0NjAxMCwic3ViIjoiYXBpX2t"
-        "leSJ9.Msc2VplWWL2Jprz3qDcZ-feLHuT8FCyHdAMKsz8mFZM";
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiMDAxODQ2MDgtOWI0My00MjZkLWIyOGQ"
+        "tNDBlM2I3Y2MwZmU1IiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTYyNDUzMzQ5NCwic3ViIjoiYXBpX2t"
+        "leSJ9.LjLtatoAuOuab7hXMbhpXZuw8iPGQCt2lpTB1fEktVQ";
 const uint32_t FREQUENCY = 900000000;
 const uint32_t BANDWIDTH = 125;
 const uint32_t SPREADING_FACTORS[] = {7, 8, 9, 10, 11, 12};
@@ -40,3 +40,7 @@ const char* ORGANIZATION_DISPLAY_NAME = "Sample Organization";
 const char* NETWORK_SERVER_NAME = "sample-network-server";
 const char* NETWORK_SERVER_SERVER = "0.0.0.0:8500";
 const char* SERVICE_PROFILE_NAME = "sample-service-profile";
+const char* MULTICAST_GROUP_NAME = "sample-multicast-group";
+const char* MULTICAST_ADDRESS = "0a0b0c0d";
+const char* MC_NWK_S_KEY = "0f0e0d0c0b0a09080706050403020100";
+const char* MC_APP_S_KEY = "0f0e0d0c0b0a09080706050403020100";
