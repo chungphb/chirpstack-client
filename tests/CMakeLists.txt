@@ -1,5 +1,5 @@
 foreach(target_var
-        application device device_profile gateway gateway_profile
+        application device device_profile gateway gateway_profile internal
         multicast_group network_server organization service_profile user simulator)
     add_executable("${target_var}_test" "${target_var}_test.cc" test_config.h)
     target_link_libraries("${target_var}_test"

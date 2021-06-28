@@ -1083,4 +1083,8 @@ update_user_password_response chirpstack_client::update_user_password(const upda
     }
 }
 
+void chirpstack_client::set_jwt_token(const std::string& jwt_token) {
+    _config.jwt_token = jwt_token;
+}
+
 }

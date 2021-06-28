@@ -44,3 +44,6 @@ const char* MULTICAST_GROUP_NAME = "sample-multicast-group";
 const char* MULTICAST_ADDRESS = "0a0b0c0d";
 const char* MC_NWK_S_KEY = "0f0e0d0c0b0a09080706050403020100";
 const char* MC_APP_S_KEY = "0f0e0d0c0b0a09080706050403020100";
+const char* ADMIN_USER = "admin";
+const char* ADMIN_PASSWORD = "admin";
+const char* API_KEY_NAME = "sample-api-key";

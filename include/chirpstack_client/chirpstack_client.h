@@ -142,6 +142,8 @@ public:
     list_user_response list_user(const list_user_request& request);
     update_user_password_response update_user_password(const update_user_password_request& request);
 
+    void set_jwt_token(const std::string& jwt_token);
+
 private:
     chirpstack_client_config _config;
     std::shared_ptr<grpc::Channel> _channel;
