@@ -8,6 +8,7 @@
 #include <vector>
 
 struct test_config {
+    bool client_log_enabled = false;
     std::string application_server = "localhost::8080";
     std::string jwt_token;
     std::string service_profile_id;

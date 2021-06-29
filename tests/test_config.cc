@@ -16,7 +16,12 @@ void test_config::parse() {
 
     // General config
 
-    const toml::Value* val = config.find("general.application_server");
+    const toml::Value* val = config.find("general.client_log_enabled");
+    if (val && val->is<bool>()) {
+        client_log_enabled = val->as<bool>();
+    }
+
+    val = config.find("general.application_server");
     if (val && val->is<std::string>()) {
         application_server = val->as<std::string>();
     } else {

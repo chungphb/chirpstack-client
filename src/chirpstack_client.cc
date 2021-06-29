@@ -4,6 +4,8 @@
 
 #include <chirpstack_client/chirpstack_client.h>
 
+#include <utility>
+
 using namespace api;
 using namespace grpc;
 
@@ -11,7 +13,7 @@ namespace chirpstack_cpp_client {
 
 chirpstack_client::chirpstack_client(const std::string& server_address, chirpstack_client_config config) {
     _channel = CreateChannel(server_address, grpc::InsecureChannelCredentials());
-    _config = config;
+    _config = std::move(config);
     _application_service_stub = ApplicationService::NewStub(_channel);
     _device_service_stub = DeviceService::NewStub(_channel);
     _device_profile_service_stub = DeviceProfileService::NewStub(_channel);
@@ -34,6 +36,7 @@ create_application_response chirpstack_client::create_application(const create_a
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _application_service_stub->Create(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return create_application_response{status.error_code()};
     } else {
         return create_application_response{std::move(response)};
@@ -46,6 +49,7 @@ get_application_response chirpstack_client::get_application(const get_applicatio
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _application_service_stub->Get(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return get_application_response{status.error_code()};
     } else {
         return get_application_response{std::move(response)};
@@ -58,6 +62,7 @@ update_application_response chirpstack_client::update_application(const update_a
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _application_service_stub->Update(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return update_application_response{status.error_code()};
     } else {
         return update_application_response{std::move(response)};
@@ -70,6 +75,7 @@ delete_application_response chirpstack_client::delete_application(const delete_a
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _application_service_stub->Delete(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return delete_application_response{status.error_code()};
     } else {
         return delete_application_response{std::move(response)};
@@ -82,6 +88,7 @@ list_application_response chirpstack_client::list_application(const list_applica
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _application_service_stub->List(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return list_application_response{status.error_code()};
     } else {
         return list_application_response{std::move(response)};
@@ -96,6 +103,7 @@ create_device_response chirpstack_client::create_device(const create_device_requ
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _device_service_stub->Create(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return create_device_response{status.error_code()};
     } else {
         return create_device_response{std::move(response)};
@@ -108,6 +116,7 @@ get_device_response chirpstack_client::get_device(const get_device_request& requ
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _device_service_stub->Get(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return get_device_response{status.error_code()};
     } else {
         return get_device_response{std::move(response)};
@@ -120,6 +129,7 @@ update_device_response chirpstack_client::update_device(const update_device_requ
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _device_service_stub->Update(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return update_device_response{status.error_code()};
     } else {
         return update_device_response{std::move(response)};
@@ -132,6 +142,7 @@ delete_device_response chirpstack_client::delete_device(const delete_device_requ
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _device_service_stub->Delete(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return delete_device_response{status.error_code()};
     } else {
         return delete_device_response{std::move(response)};
@@ -144,6 +155,7 @@ list_device_response chirpstack_client::list_device(const list_device_request& r
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _device_service_stub->List(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return list_device_response{status.error_code()};
     } else {
         return list_device_response{std::move(response)};
@@ -156,6 +168,7 @@ create_device_keys_response chirpstack_client::create_device_keys(const create_d
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _device_service_stub->CreateKeys(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return create_device_keys_response{status.error_code()};
     } else {
         return create_device_keys_response{std::move(response)};
@@ -168,6 +181,7 @@ get_device_keys_response chirpstack_client::get_device_keys(const get_device_key
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _device_service_stub->GetKeys(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return get_device_keys_response{status.error_code()};
     } else {
         return get_device_keys_response{std::move(response)};
@@ -180,6 +194,7 @@ update_device_keys_response chirpstack_client::update_device_keys(const update_d
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _device_service_stub->UpdateKeys(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return update_device_keys_response{status.error_code()};
     } else {
         return update_device_keys_response{std::move(response)};
@@ -192,6 +207,7 @@ delete_device_keys_response chirpstack_client::delete_device_keys(const delete_d
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _device_service_stub->DeleteKeys(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return delete_device_keys_response{status.error_code()};
     } else {
         return delete_device_keys_response{std::move(response)};
@@ -204,6 +220,7 @@ activate_device_response chirpstack_client::activate_device(const activate_devic
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _device_service_stub->Activate(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return activate_device_response{status.error_code()};
     } else {
         return activate_device_response{std::move(response)};
@@ -216,6 +233,7 @@ deactivate_device_response chirpstack_client::deactivate_device(const deactivate
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _device_service_stub->Deactivate(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return delete_device_keys_response{status.error_code()};
     } else {
         return delete_device_keys_response{std::move(response)};
@@ -228,6 +246,7 @@ get_device_activation_response chirpstack_client::get_device_activation(const ge
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _device_service_stub->GetActivation(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return get_device_activation_response{status.error_code()};
     } else {
         return get_device_activation_response{std::move(response)};
@@ -240,6 +259,7 @@ get_random_dev_addr_response chirpstack_client::get_random_dev_addr(const get_ra
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _device_service_stub->GetRandomDevAddr(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return get_random_dev_addr_response{status.error_code()};
     } else {
         return get_random_dev_addr_response{std::move(response)};
@@ -254,6 +274,7 @@ create_device_profile_response chirpstack_client::create_device_profile(const cr
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _device_profile_service_stub->Create(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return create_device_profile_response{status.error_code()};
     } else {
         return create_device_profile_response{std::move(response)};
@@ -266,6 +287,7 @@ get_device_profile_response chirpstack_client::get_device_profile(const get_devi
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _device_profile_service_stub->Get(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return get_device_profile_response{status.error_code()};
     } else {
         return get_device_profile_response{std::move(response)};
@@ -278,6 +300,7 @@ update_device_profile_response chirpstack_client::update_device_profile(const up
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _device_profile_service_stub->Update(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return update_device_profile_response{status.error_code()};
     } else {
         return update_device_profile_response{std::move(response)};
@@ -290,6 +313,7 @@ delete_device_profile_response chirpstack_client::delete_device_profile(const de
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _device_profile_service_stub->Delete(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return delete_device_profile_response{status.error_code()};
     } else {
         return delete_device_profile_response{std::move(response)};
@@ -302,6 +326,7 @@ list_device_profile_response chirpstack_client::list_device_profile(const list_d
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _device_profile_service_stub->List(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return list_device_profile_response{status.error_code()};
     } else {
         return list_device_profile_response{std::move(response)};
@@ -316,6 +341,7 @@ enqueue_device_queue_item_response chirpstack_client::enqueue_device_queue_item(
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _device_queue_service_stub->Enqueue(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return enqueue_device_queue_item_response{status.error_code()};
     } else {
         return enqueue_device_queue_item_response{std::move(response)};
@@ -328,6 +354,7 @@ flush_device_queue_response chirpstack_client::flush_device_queue(const flush_de
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _device_queue_service_stub->Flush(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return flush_device_queue_response{status.error_code()};
     } else {
         return flush_device_queue_response{std::move(response)};
@@ -340,6 +367,7 @@ list_device_queue_items_response chirpstack_client::list_device_queue_items(cons
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _device_queue_service_stub->List(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return list_device_queue_items_response{status.error_code()};
     } else {
         return list_device_queue_items_response{std::move(response)};
@@ -354,6 +382,7 @@ create_gateway_response chirpstack_client::create_gateway(const create_gateway_r
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _gateway_service_stub->Create(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return create_gateway_response{status.error_code()};
     } else {
         return create_gateway_response{std::move(response)};
@@ -366,6 +395,7 @@ get_gateway_response chirpstack_client::get_gateway(const get_gateway_request& r
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _gateway_service_stub->Get(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return get_gateway_response{status.error_code()};
     } else {
         return get_gateway_response{std::move(response)};
@@ -378,6 +408,7 @@ update_gateway_response chirpstack_client::update_gateway(const update_gateway_r
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _gateway_service_stub->Update(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return update_gateway_response{status.error_code()};
     } else {
         return update_gateway_response{std::move(response)};
@@ -390,6 +421,7 @@ delete_gateway_response chirpstack_client::delete_gateway(const delete_gateway_r
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _gateway_service_stub->Delete(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return delete_gateway_response{status.error_code()};
     } else {
         return delete_gateway_response{std::move(response)};
@@ -402,6 +434,7 @@ list_gateway_response chirpstack_client::list_gateway(const list_gateway_request
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _gateway_service_stub->List(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return list_gateway_response{status.error_code()};
     } else {
         return list_gateway_response{std::move(response)};
@@ -414,6 +447,7 @@ get_gateway_stats_response chirpstack_client::get_gateway_stats(const get_gatewa
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _gateway_service_stub->GetStats(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return get_gateway_stats_response{status.error_code()};
     } else {
         return get_gateway_stats_response{std::move(response)};
@@ -426,6 +460,7 @@ get_last_ping_response chirpstack_client::get_last_ping(const get_last_ping_requ
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _gateway_service_stub->GetLastPing(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return get_last_ping_response{status.error_code()};
     } else {
         return get_last_ping_response{std::move(response)};
@@ -438,6 +473,7 @@ generate_gateway_client_certificate_response chirpstack_client::generate_gateway
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _gateway_service_stub->GenerateGatewayClientCertificate(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return generate_gateway_client_certificate_response{status.error_code()};
     } else {
         return generate_gateway_client_certificate_response{std::move(response)};
@@ -452,6 +488,7 @@ create_gateway_profile_response chirpstack_client::create_gateway_profile(const 
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _gateway_profile_service_stub->Create(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return create_gateway_profile_response{status.error_code()};
     } else {
         return create_gateway_profile_response{std::move(response)};
@@ -464,6 +501,7 @@ get_gateway_profile_response chirpstack_client::get_gateway_profile(const get_ga
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _gateway_profile_service_stub->Get(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return get_gateway_profile_response{status.error_code()};
     } else {
         return get_gateway_profile_response{std::move(response)};
@@ -476,6 +514,7 @@ update_gateway_profile_response chirpstack_client::update_gateway_profile(const 
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _gateway_profile_service_stub->Update(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return update_gateway_profile_response{status.error_code()};
     } else {
         return update_gateway_profile_response{std::move(response)};
@@ -488,6 +527,7 @@ delete_gateway_profile_response chirpstack_client::delete_gateway_profile(const 
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _gateway_profile_service_stub->Delete(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return delete_gateway_profile_response{status.error_code()};
     } else {
         return delete_gateway_profile_response{std::move(response)};
@@ -500,6 +540,7 @@ list_gateway_profiles_response chirpstack_client::list_gateway_profiles(const li
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _gateway_profile_service_stub->List(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return list_gateway_profiles_response{status.error_code()};
     } else {
         return list_gateway_profiles_response{std::move(response)};
@@ -514,6 +555,7 @@ login_response chirpstack_client::login(const login_request& request) {
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _internal_service_stub->Login(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return login_response{status.error_code()};
     } else {
         return login_response{std::move(response)};
@@ -526,6 +568,7 @@ profile_response chirpstack_client::profile(const profile_request& request) {
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _internal_service_stub->Profile(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return profile_response{status.error_code()};
     } else {
         return profile_response{std::move(response)};
@@ -538,6 +581,7 @@ global_search_response chirpstack_client::global_search(const global_search_requ
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _internal_service_stub->GlobalSearch(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return global_search_response{status.error_code()};
     } else {
         return global_search_response{std::move(response)};
@@ -550,6 +594,7 @@ create_api_key_response chirpstack_client::create_api_key(const create_api_key_r
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _internal_service_stub->CreateAPIKey(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return create_api_key_response{status.error_code()};
     } else {
         return create_api_key_response{std::move(response)};
@@ -562,6 +607,7 @@ delete_api_key_response chirpstack_client::delete_api_key(const delete_api_key_r
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _internal_service_stub->DeleteAPIKey(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return delete_api_key_response{status.error_code()};
     } else {
         return delete_api_key_response{std::move(response)};
@@ -574,6 +620,7 @@ list_api_keys_response chirpstack_client::list_api_keys(const list_api_keys_requ
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _internal_service_stub->ListAPIKeys(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return list_api_keys_response{status.error_code()};
     } else {
         return list_api_keys_response{std::move(response)};
@@ -586,6 +633,7 @@ settings_response chirpstack_client::settings(const settings_request& request) {
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _internal_service_stub->Settings(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return settings_response{status.error_code()};
     } else {
         return settings_response{std::move(response)};
@@ -598,6 +646,7 @@ open_id_connect_login_response chirpstack_client::open_id_connect_login(const op
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _internal_service_stub->OpenIDConnectLogin(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return open_id_connect_login_response{status.error_code()};
     } else {
         return open_id_connect_login_response{std::move(response)};
@@ -610,6 +659,7 @@ get_devices_summary_response chirpstack_client::get_devices_summary(const get_de
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _internal_service_stub->GetDevicesSummary(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return get_devices_summary_response{status.error_code()};
     } else {
         return get_devices_summary_response{std::move(response)};
@@ -622,6 +672,7 @@ get_gateways_summary_response chirpstack_client::get_gateways_summary(const get_
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _internal_service_stub->GetGatewaysSummary(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return get_gateways_summary_response{status.error_code()};
     } else {
         return get_gateways_summary_response{std::move(response)};
@@ -636,6 +687,7 @@ create_multicast_group_response chirpstack_client::create_multicast_group(const 
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _multicast_group_service_stub->Create(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return create_multicast_group_response{status.error_code()};
     } else {
         return create_multicast_group_response{std::move(response)};
@@ -648,6 +700,7 @@ get_multicast_group_response chirpstack_client::get_multicast_group(const get_mu
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _multicast_group_service_stub->Get(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return get_multicast_group_response{status.error_code()};
     } else {
         return get_multicast_group_response{std::move(response)};
@@ -660,6 +713,7 @@ update_multicast_group_response chirpstack_client::update_multicast_group(const 
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _multicast_group_service_stub->Update(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return update_multicast_group_response{status.error_code()};
     } else {
         return update_multicast_group_response{std::move(response)};
@@ -672,6 +726,7 @@ delete_multicast_group_response chirpstack_client::delete_multicast_group(const 
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _multicast_group_service_stub->Delete(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return delete_multicast_group_response{status.error_code()};
     } else {
         return delete_multicast_group_response{std::move(response)};
@@ -684,6 +739,7 @@ list_multicast_group_response chirpstack_client::list_multicast_group(const list
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _multicast_group_service_stub->List(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return list_multicast_group_response{status.error_code()};
     } else {
         return list_multicast_group_response{std::move(response)};
@@ -696,6 +752,7 @@ add_device_to_multicast_group_response chirpstack_client::add_device_to_multicas
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _multicast_group_service_stub->AddDevice(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return add_device_to_multicast_group_response{status.error_code()};
     } else {
         return add_device_to_multicast_group_response{std::move(response)};
@@ -708,6 +765,7 @@ remove_device_from_multicast_group_response chirpstack_client::remove_device_fro
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _multicast_group_service_stub->RemoveDevice(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return remove_device_from_multicast_group_response{status.error_code()};
     } else {
         return remove_device_from_multicast_group_response{std::move(response)};
@@ -720,6 +778,7 @@ enqueue_multicast_queue_item_response chirpstack_client::enqueue_multicast_queue
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _multicast_group_service_stub->Enqueue(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return enqueue_multicast_queue_item_response{status.error_code()};
     } else {
         return enqueue_multicast_queue_item_response{std::move(response)};
@@ -732,6 +791,7 @@ flush_multicast_group_queue_items_response chirpstack_client::flush_multicast_gr
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _multicast_group_service_stub->FlushQueue(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return flush_multicast_group_queue_items_response{status.error_code()};
     } else {
         return flush_multicast_group_queue_items_response{std::move(response)};
@@ -744,6 +804,7 @@ list_multicast_group_queue_items_response chirpstack_client::list_multicast_grou
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _multicast_group_service_stub->ListQueue(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return list_multicast_group_queue_items_response{status.error_code()};
     } else {
         return list_multicast_group_queue_items_response{std::move(response)};
@@ -758,6 +819,7 @@ create_network_server_response chirpstack_client::create_network_server(const cr
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _network_server_service_stub->Create(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return create_network_server_response{status.error_code()};
     } else {
         return create_network_server_response{std::move(response)};
@@ -770,6 +832,7 @@ get_network_server_response chirpstack_client::get_network_server(const get_netw
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _network_server_service_stub->Get(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return get_network_server_response{status.error_code()};
     } else {
         return get_network_server_response{std::move(response)};
@@ -782,6 +845,7 @@ update_network_server_response chirpstack_client::update_network_server(const up
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _network_server_service_stub->Update(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return update_network_server_response{status.error_code()};
     } else {
         return update_network_server_response{std::move(response)};
@@ -794,6 +858,7 @@ delete_network_server_response chirpstack_client::delete_network_server(const de
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _network_server_service_stub->Delete(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return delete_network_server_response{status.error_code()};
     } else {
         return delete_network_server_response{std::move(response)};
@@ -806,6 +871,7 @@ list_network_server_response chirpstack_client::list_network_server(const list_n
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _network_server_service_stub->List(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return list_network_server_response{status.error_code()};
     } else {
         return list_network_server_response{std::move(response)};
@@ -818,6 +884,7 @@ get_adr_algorithms_response chirpstack_client::get_adr_algorithms(const get_adr_
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _network_server_service_stub->GetADRAlgorithms(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return get_adr_algorithms_response{status.error_code()};
     } else {
         return get_adr_algorithms_response{std::move(response)};
@@ -832,6 +899,7 @@ create_organization_response chirpstack_client::create_organization(const create
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _organization_service_stub->Create(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return create_organization_response{status.error_code()};
     } else {
         return create_organization_response{std::move(response)};
@@ -844,6 +912,7 @@ get_organization_response chirpstack_client::get_organization(const get_organiza
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _organization_service_stub->Get(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return get_organization_response{status.error_code()};
     } else {
         return get_organization_response{std::move(response)};
@@ -856,6 +925,7 @@ update_organization_response chirpstack_client::update_organization(const update
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _organization_service_stub->Update(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return update_organization_response{status.error_code()};
     } else {
         return update_organization_response{std::move(response)};
@@ -868,6 +938,7 @@ delete_organization_response chirpstack_client::delete_organization(const delete
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _organization_service_stub->Delete(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return delete_organization_response{status.error_code()};
     } else {
         return delete_organization_response{std::move(response)};
@@ -880,6 +951,7 @@ list_organization_response chirpstack_client::list_organization(const list_organ
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _organization_service_stub->List(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return list_organization_response{status.error_code()};
     } else {
         return list_organization_response{std::move(response)};
@@ -892,7 +964,7 @@ add_organization_user_response chirpstack_client::add_organization_user(const ad
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _organization_service_stub->AddUser(&context, request, &response);
     if (!status.ok()) {
-        printf("%s\n", status.error_message().c_str());
+        log(status.error_message());
         return add_organization_user_response{status.error_code()};
     } else {
         return add_organization_user_response{std::move(response)};
@@ -905,6 +977,7 @@ get_organization_user_response chirpstack_client::get_organization_user(const ge
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _organization_service_stub->GetUser(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return get_organization_user_response{status.error_code()};
     } else {
         return get_organization_user_response{std::move(response)};
@@ -917,6 +990,7 @@ update_organization_user_response chirpstack_client::update_organization_user(co
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _organization_service_stub->UpdateUser(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return update_organization_user_response{status.error_code()};
     } else {
         return update_organization_user_response{std::move(response)};
@@ -929,6 +1003,7 @@ delete_organization_user_response chirpstack_client::delete_organization_user(co
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _organization_service_stub->DeleteUser(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return delete_organization_user_response{status.error_code()};
     } else {
         return delete_organization_user_response{std::move(response)};
@@ -941,6 +1016,7 @@ list_organization_users_response chirpstack_client::list_organization_users(cons
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _organization_service_stub->ListUsers(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return list_organization_users_response{status.error_code()};
     } else {
         return list_organization_users_response{std::move(response)};
@@ -955,6 +1031,7 @@ create_service_profile_response chirpstack_client::create_service_profile(const 
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _service_profile_service_stub->Create(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return create_service_profile_response{status.error_code()};
     } else {
         return create_service_profile_response{std::move(response)};
@@ -967,6 +1044,7 @@ get_service_profile_response chirpstack_client::get_service_profile(const get_se
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _service_profile_service_stub->Get(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return get_service_profile_response{status.error_code()};
     } else {
         return get_service_profile_response{std::move(response)};
@@ -979,6 +1057,7 @@ update_service_profile_response chirpstack_client::update_service_profile(const 
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _service_profile_service_stub->Update(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return update_service_profile_response{status.error_code()};
     } else {
         return update_service_profile_response{std::move(response)};
@@ -991,6 +1070,7 @@ delete_service_profile_response chirpstack_client::delete_service_profile(const 
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _service_profile_service_stub->Delete(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return delete_service_profile_response{status.error_code()};
     } else {
         return delete_service_profile_response{std::move(response)};
@@ -1003,6 +1083,7 @@ list_service_profile_response chirpstack_client::list_service_profile(const list
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _service_profile_service_stub->List(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return list_service_profile_response{status.error_code()};
     } else {
         return list_service_profile_response{std::move(response)};
@@ -1017,6 +1098,7 @@ create_user_response chirpstack_client::create_user(const create_user_request& r
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _user_service_stub->Create(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return create_user_response{status.error_code()};
     } else {
         return create_user_response{std::move(response)};
@@ -1029,6 +1111,7 @@ get_user_response chirpstack_client::get_user(const get_user_request& request) {
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _user_service_stub->Get(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return get_user_response{status.error_code()};
     } else {
         return get_user_response{std::move(response)};
@@ -1041,6 +1124,7 @@ update_user_response chirpstack_client::update_user(const update_user_request& r
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _user_service_stub->Update(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return update_user_response{status.error_code()};
     } else {
         return update_user_response{std::move(response)};
@@ -1053,6 +1137,7 @@ delete_user_response chirpstack_client::delete_user(const delete_user_request& r
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _user_service_stub->Delete(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return delete_user_response{status.error_code()};
     } else {
         return delete_user_response{std::move(response)};
@@ -1065,6 +1150,7 @@ list_user_response chirpstack_client::list_user(const list_user_request& request
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _user_service_stub->List(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return list_user_response{status.error_code()};
     } else {
         return list_user_response{std::move(response)};
@@ -1077,6 +1163,7 @@ update_user_password_response chirpstack_client::update_user_password(const upda
     context.AddMetadata("authorization", _config.jwt_token);
     auto status = _user_service_stub->UpdatePassword(&context, request, &response);
     if (!status.ok()) {
+        log(status.error_message());
         return update_user_password_response{status.error_code()};
     } else {
         return update_user_password_response{std::move(response)};
@@ -1085,6 +1172,20 @@ update_user_password_response chirpstack_client::update_user_password(const upda
 
 void chirpstack_client::set_jwt_token(const std::string& jwt_token) {
     _config.jwt_token = jwt_token;
+}
+
+void chirpstack_client::enable_log() {
+    _config.log_enabled = true;
+}
+
+void chirpstack_client::disable_log() {
+    _config.log_enabled = false;
+}
+
+void chirpstack_client::log(const std::string& error_message) {
+    if (_config.log_enabled) {
+        printf("%s\n", error_message.c_str());
+    }
 }
 
 }

@@ -1,5 +1,5 @@
 [general]
-log_level = 4
+client_log_enabled = false
 application_server = "localhost:8080"
 
 [test]

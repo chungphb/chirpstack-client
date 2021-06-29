@@ -260,6 +260,7 @@ int main(int argc, char** argv) {
 
     chirpstack_client_config config{};
     config.jwt_token = test_config().global_jwt_token;
+    config.log_enabled = test_config().client_log_enabled;
     chirpstack_client client{test_config().application_server, config};
     test_cache cache;
 

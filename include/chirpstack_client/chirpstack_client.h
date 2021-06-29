@@ -26,6 +26,7 @@ namespace chirpstack_cpp_client {
 
 struct chirpstack_client_config {
     std::string jwt_token;
+    bool log_enabled = false;
 };
 
 struct chirpstack_client {
@@ -143,6 +144,9 @@ public:
     update_user_password_response update_user_password(const update_user_password_request& request);
 
     void set_jwt_token(const std::string& jwt_token);
+    void enable_log();
+    void disable_log();
+    void log(const std::string& error_message);
 
 private:
     chirpstack_client_config _config;

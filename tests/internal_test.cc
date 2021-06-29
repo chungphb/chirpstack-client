@@ -296,6 +296,7 @@ int main(int argc, char** argv) {
 
     chirpstack_client_config config{};
     chirpstack_client client{test_config().application_server, config};
+    config.log_enabled = test_config().client_log_enabled;
     test_cache cache;
 
     std::cout << "TEST LOGIN" << std::endl;
