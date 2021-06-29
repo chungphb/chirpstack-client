@@ -13,7 +13,7 @@ struct test_cache {
 void get_service_profile(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     get_service_profile_request request;
-    request.set_id(SERVICE_PROFILE_ID);
+    request.set_id(test_config().service_profile_id);
 
     // Send request
     auto response = client.get_service_profile(request);
@@ -29,16 +29,16 @@ void get_service_profile(chirpstack_client& client, test_cache& cache) {
 void test_create_gateway_profile(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     create_gateway_profile_request request;
-    request.mutable_gateway_profile()->set_name(GATEWAY_PROFILE_NAME);
+    request.mutable_gateway_profile()->set_name(test_config().gp_name);
     request.mutable_gateway_profile()->set_network_server_id(cache.service_profile.network_server_id());
     request.mutable_gateway_profile()->add_channels(0);
     request.mutable_gateway_profile()->add_channels(1);
     request.mutable_gateway_profile()->add_channels(2);
     auto extra_channel = request.mutable_gateway_profile()->add_extra_channels();
     extra_channel->set_modulation(common::Modulation::LORA);
-    extra_channel->set_bandwidth(BANDWIDTH);
-    extra_channel->set_frequency(FREQUENCY);
-    for (const auto& spreading_factor : SPREADING_FACTORS) {
+    extra_channel->set_bandwidth(test_config().gp_bandwidth);
+    extra_channel->set_frequency(test_config().gp_frequency);
+    for (const auto& spreading_factor : test_config().gp_spreading_factors) {
         extra_channel->add_spreading_factors(spreading_factor);
     }
 
@@ -103,9 +103,9 @@ void test_update_gateway_profile(chirpstack_client& client, test_cache& cache) {
     request.mutable_gateway_profile()->add_extra_channels();
     auto extra_channel = request.mutable_gateway_profile()->add_extra_channels();
     extra_channel->set_modulation(common::Modulation::LORA);
-    extra_channel->set_bandwidth(BANDWIDTH);
-    extra_channel->set_frequency(FREQUENCY + 200000);
-    for (const auto& spreading_factor : SPREADING_FACTORS) {
+    extra_channel->set_bandwidth(test_config().gp_bandwidth);
+    extra_channel->set_frequency(test_config().gp_frequency + 200000);
+    for (const auto& spreading_factor : test_config().gp_spreading_factors) {
         extra_channel->add_spreading_factors(spreading_factor);
     }
 
@@ -153,8 +153,8 @@ void test_delete_gateway_profile(chirpstack_client& client, test_cache& cache) {
 
 int main(int argc, char** argv) {
     chirpstack_client_config config{};
-    config.jwt_token = GLOBAL_JWT_TOKEN;
-    chirpstack_client client{APPLICATION_SERVER, config};
+    config.jwt_token = test_config().global_jwt_token;
+    chirpstack_client client{test_config().application_server, config};
     test_cache cache;
 
     std::cout << "GET SERVICE-PROFILE" << std::endl;

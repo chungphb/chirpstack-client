@@ -15,7 +15,7 @@ struct test_cache {
 void get_service_profile(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     get_service_profile_request request;
-    request.set_id(SERVICE_PROFILE_ID);
+    request.set_id(test_config().service_profile_id);
 
     // Send request
     auto response = client.get_service_profile(request);
@@ -31,8 +31,8 @@ void get_service_profile(chirpstack_client& client, test_cache& cache) {
 void test_login(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     login_request request;
-    request.set_email(ADMIN_USER);
-    request.set_password(ADMIN_PASSWORD);
+    request.set_email(test_config().admin_username);
+    request.set_password(test_config().admin_password);
 
     // Send request
     auto response = client.login(request);
@@ -125,7 +125,7 @@ void test_global_search(chirpstack_client& client, test_cache& cache) {
 void test_create_api_key(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     create_api_key_request request;
-    request.mutable_api_key()->set_name(API_KEY_NAME);
+    request.mutable_api_key()->set_name(test_config().api_key_name);
     request.mutable_api_key()->set_is_admin(true);
 
     // Send request
@@ -140,7 +140,7 @@ void test_create_api_key(chirpstack_client& client, test_cache& cache) {
     cache.jwt_token = response.get().jwt_token();
 
     // Display response
-    std::cout << "\tAPI key " << API_KEY_NAME << std::endl;
+    std::cout << "\tAPI key " << test_config().api_key_name << std::endl;
     std::cout << "\t\tID: " << response.get().id() << std::endl;
     std::cout << "\t\tJWT token: " << response.get().jwt_token() << std::endl;
 }
@@ -272,7 +272,7 @@ void test_get_gateways_summary(chirpstack_client& client, test_cache& cache) {
 
 int main(int argc, char** argv) {
     chirpstack_client_config config{};
-    chirpstack_client client{APPLICATION_SERVER, config};
+    chirpstack_client client{test_config().application_server, config};
     test_cache cache;
 
     std::cout << "TEST LOGIN" << std::endl;
@@ -303,7 +303,7 @@ int main(int argc, char** argv) {
     std::cout << "GET SERVICE-PROFILE" << std::endl;
     get_service_profile(client, cache);
 
-    client.set_jwt_token(JWT_TOKEN);
+    client.set_jwt_token(test_config().jwt_token);
     std::cout << "TEST GET DEVICES SUMMARY" << std::endl;
     test_get_devices_summary(client, cache);
 

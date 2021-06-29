@@ -13,7 +13,7 @@ struct test_cache {
 void get_service_profile(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     get_service_profile_request request;
-    request.set_id(SERVICE_PROFILE_ID);
+    request.set_id(test_config().service_profile_id);
 
     // Send request
     auto response = client.get_service_profile(request);
@@ -29,7 +29,7 @@ void get_service_profile(chirpstack_client& client, test_cache& cache) {
 void test_create_device_profile(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     create_device_profile_request request;
-    request.mutable_device_profile()->set_name(DEVICE_PROFILE_NAME);
+    request.mutable_device_profile()->set_name(test_config().dp_name);
     request.mutable_device_profile()->set_organization_id(cache.service_profile.organization_id());
     request.mutable_device_profile()->set_network_server_id(cache.service_profile.network_server_id());
     request.mutable_device_profile()->set_mac_version("1.0.3");
@@ -123,8 +123,8 @@ void test_delete_device_profile(chirpstack_client& client, test_cache& cache) {
 
 int main(int argc, char** argv) {
     chirpstack_client_config config{};
-    config.jwt_token = JWT_TOKEN;
-    chirpstack_client client{APPLICATION_SERVER, config};
+    config.jwt_token = test_config().jwt_token;
+    chirpstack_client client{test_config().application_server, config};
     test_cache cache;
 
     std::cout << "GET SERVICE-PROFILE" << std::endl;

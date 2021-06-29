@@ -22,7 +22,7 @@ void generate_bash_files() {
         ofs.open("start-sample-network-server.sh", std::ofstream::out | std::ofstream::trunc);
         ofs << R"(#!/bin/bash)" << '\n';
         ofs << R"(chirpstack-network-server configfile > sample-ns-config.toml)" << '\n';
-        ofs << R"(sed -i -E "s/bind=\".+\"/bind=\")" << NETWORK_SERVER_SERVER << R"(\"/" sample-ns-config.toml)" << '\n';
+        ofs << R"(sed -i -E "s/bind=\".+\"/bind=\")" << test_config().ns_server << R"(\"/" sample-ns-config.toml)" << '\n';
         ofs << R"(sed -i -E "s/dsn=\".*\"/dsn=\")";
         ofs << R"(postgres:\/\/sample_ns:sample_ns@localhost\/sample_ns?sslmode=disable)";
         ofs << R"(\"/" sample-ns-config.toml)" << '\n';
@@ -53,8 +53,8 @@ void generate_bash_files() {
 void test_create_network_server(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     create_network_server_request request;
-    request.mutable_network_server()->set_name(NETWORK_SERVER_NAME);
-    request.mutable_network_server()->set_server(NETWORK_SERVER_SERVER);
+    request.mutable_network_server()->set_name(test_config().ns_name);
+    request.mutable_network_server()->set_server(test_config().ns_server);
     request.mutable_network_server()->set_gateway_discovery_enabled(true);
     request.mutable_network_server()->set_gateway_discovery_interval(24);
     request.mutable_network_server()->set_gateway_discovery_tx_frequency(960000000);
@@ -168,8 +168,8 @@ void test_get_adr_algorithms(chirpstack_client& client, test_cache& cache) {
 
 int main(int argc, char** argv) {
     chirpstack_client_config config{};
-    config.jwt_token = GLOBAL_JWT_TOKEN;
-    chirpstack_client client{APPLICATION_SERVER, config};
+    config.jwt_token = test_config().global_jwt_token;
+    chirpstack_client client{test_config().application_server, config};
     test_cache cache;
 
     generate_bash_files();

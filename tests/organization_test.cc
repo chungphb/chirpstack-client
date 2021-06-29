@@ -17,9 +17,9 @@ void create_user(chirpstack_client& client, test_cache& cache) {
     request.mutable_user()->set_session_ttl(60);
     request.mutable_user()->set_is_admin(false);
     request.mutable_user()->set_is_active(true);
-    request.mutable_user()->set_email(USER);
-    request.mutable_user()->set_note(USER);
-    request.set_password(PASSWORD);
+    request.mutable_user()->set_email(test_config().usr_username);
+    request.mutable_user()->set_note(test_config().usr_username);
+    request.set_password(test_config().usr_password);
 
     // Send request
     auto response = client.create_user(request);
@@ -48,8 +48,8 @@ void delete_user(chirpstack_client& client, test_cache& cache) {
 void test_create_organization(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     create_organization_request request;
-    request.mutable_organization()->set_name(ORGANIZATION_NAME);
-    request.mutable_organization()->set_display_name(ORGANIZATION_DISPLAY_NAME);
+    request.mutable_organization()->set_name(test_config().org_name);
+    request.mutable_organization()->set_display_name(test_config().org_display_name);
     request.mutable_organization()->set_can_have_gateways(true);
     request.mutable_organization()->set_max_gateway_count(10);
     request.mutable_organization()->set_max_device_count(100);
@@ -145,7 +145,7 @@ void test_add_organization_user(chirpstack_client& client, test_cache& cache) {
     request.mutable_organization_user()->set_is_admin(false);
     request.mutable_organization_user()->set_is_device_admin(true);
     request.mutable_organization_user()->set_is_gateway_admin(false);
-    request.mutable_organization_user()->set_email(USER);
+    request.mutable_organization_user()->set_email(test_config().usr_username);
 
     // Send request
     auto response = client.add_organization_user(request);
@@ -236,8 +236,8 @@ void test_delete_organization_user(chirpstack_client& client, test_cache& cache)
 
 int main(int argc, char** argv) {
     chirpstack_client_config config{};
-    config.jwt_token = GLOBAL_JWT_TOKEN;
-    chirpstack_client client{APPLICATION_SERVER, config};
+    config.jwt_token = test_config().global_jwt_token;
+    chirpstack_client client{test_config().application_server, config};
     test_cache cache;
 
     std::cout << "TEST CREATE ORGANIZATION" << std::endl;

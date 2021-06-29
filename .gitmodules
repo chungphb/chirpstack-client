@@ -1,3 +1,6 @@
 [submodule "modules/chirpstack-api"]
 	path = modules/chirpstack-api
 	url = https://github.com/brocaar/chirpstack-api
+[submodule "modules/tinytoml"]
+	path = modules/tinytoml
+	url = https://github.com/mayah/tinytoml

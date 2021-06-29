@@ -1,0 +1,61 @@
+[general]
+log_level = 4
+application_server = "localhost:8080"
+
+[test]
+jwt_token = ""
+service_profile_id = ""
+global_jwt_token = ""
+
+[test.application]
+name = "sample-application"
+
+[test.device]
+eui = "0001020304050607"
+nwk_key = "000102030405060708090a0b0c0d0e0f"
+app_key = "000102030405060708090a0b0c0d0e0f"
+address = "00010203"
+app_s_key = "000102030405060708090a0b0c0d0e0f"
+nwk_s_enc_key = "000102030405060708090a0b0c0d0e0f"
+s_nwk_int_key = "000102030405060708090a0b0c0d0e0f"
+f_nwk_int_key = "000102030405060708090a0b0c0d0e0f"
+f_port = 10
+payload = "packet_1234"
+
+[test.device_profile]
+name = "sample-device-profile"
+
+[test.gateway]
+id = "0001020304050607"
+
+[test.gateway_profile]
+name = "sample-gateway-profile"
+bandwidth = 125
+frequency = 900000000
+spreading_factors = [ 7, 8, 9, 10, 11, 12 ]
+
+[test.internal]
+admin_username = "admin"
+admin_password = "admin"
+api_key_name = "sample-api-key"
+
+[test.multicast_group]
+name = "sample-multicast-group"
+address = "0a0b0c0d"
+app_s_key = "0f0e0d0c0b0a09080706050403020100"
+nwk_s_key = "0f0e0d0c0b0a09080706050403020100"
+
+[test.network_server]
+name = "sample-network-server"
+server = "0.0.0.0:8500"
+
+[test.organization]
+name = "sample-organization"
+display_name = "Sample Organization"
+
+[test.service_profile]
+name = "sample-service-profile"
+
+[test.user]
+username = "sample@user.com"
+password = "password"

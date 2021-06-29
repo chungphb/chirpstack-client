@@ -16,7 +16,7 @@ struct test_cache {
 void get_service_profile(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     get_service_profile_request request;
-    request.set_id(SERVICE_PROFILE_ID);
+    request.set_id(test_config().service_profile_id);
 
     // Send request
     auto response = client.get_service_profile(request);
@@ -32,8 +32,8 @@ void get_service_profile(chirpstack_client& client, test_cache& cache) {
 void create_application(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     create_application_request request;
-    request.mutable_application()->set_name(APPLICATION_NAME);
-    request.mutable_application()->set_description(APPLICATION_NAME);
+    request.mutable_application()->set_name(test_config().app_name);
+    request.mutable_application()->set_description(test_config().app_name);
     request.mutable_application()->set_organization_id(cache.service_profile.organization_id());
     request.mutable_application()->set_service_profile_id(cache.service_profile.id());
 
@@ -64,7 +64,7 @@ void delete_application(chirpstack_client& client, test_cache& cache) {
 void create_device_profile(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     create_device_profile_request request;
-    request.mutable_device_profile()->set_name(DEVICE_PROFILE_NAME);
+    request.mutable_device_profile()->set_name(test_config().dp_name);
     request.mutable_device_profile()->set_organization_id(cache.service_profile.organization_id());
     request.mutable_device_profile()->set_network_server_id(cache.service_profile.network_server_id());
     request.mutable_device_profile()->set_mac_version("1.0.3");
@@ -98,9 +98,9 @@ void delete_device_profile(chirpstack_client& client, test_cache& cache) {
 void test_create_device(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     create_device_request request;
-    request.mutable_device()->set_dev_eui(DEVICE_EUI);
-    request.mutable_device()->set_name(DEVICE_EUI);
-    request.mutable_device()->set_description(DEVICE_EUI);
+    request.mutable_device()->set_dev_eui(test_config().dev_eui);
+    request.mutable_device()->set_name(test_config().dev_eui);
+    request.mutable_device()->set_description(test_config().dev_eui);
     request.mutable_device()->set_application_id(cache.application_id);
     request.mutable_device()->set_device_profile_id(cache.device_profile_id);
 
@@ -115,7 +115,7 @@ void test_create_device(chirpstack_client& client, test_cache& cache) {
 void test_get_device(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     get_device_request request;
-    request.set_dev_eui(DEVICE_EUI);
+    request.set_dev_eui(test_config().dev_eui);
 
     // Send request
     auto response = client.get_device(request);
@@ -139,7 +139,7 @@ void test_update_device(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     update_device_request request;
     *request.mutable_device() = cache.device;
-    auto description = std::string(DEVICE_EUI);
+    auto description = test_config().dev_eui;
     description += "-" + std::to_string(cache.device.application_id());
     description += "-" + cache.device.device_profile_id();
     request.mutable_device()->set_description(description);
@@ -151,6 +151,7 @@ void test_update_device(chirpstack_client& client, test_cache& cache) {
         exit(EXIT_FAILURE);
     }
 }
+
 void test_list_device(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     list_device_request request;
@@ -178,7 +179,7 @@ void test_list_device(chirpstack_client& client, test_cache& cache) {
 void test_delete_device(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     delete_device_request request;
-    request.set_dev_eui(DEVICE_EUI);
+    request.set_dev_eui(test_config().dev_eui);
 
     // Send request
     auto response = client.delete_device(request);
@@ -191,9 +192,9 @@ void test_delete_device(chirpstack_client& client, test_cache& cache) {
 void test_create_device_keys(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     create_device_keys_request request;
-    request.mutable_device_keys()->set_dev_eui(DEVICE_EUI);
-    request.mutable_device_keys()->set_nwk_key(NWK_KEY);
-    request.mutable_device_keys()->set_app_key(APP_KEY);
+    request.mutable_device_keys()->set_dev_eui(test_config().dev_eui);
+    request.mutable_device_keys()->set_nwk_key(test_config().dev_nwk_key);
+    request.mutable_device_keys()->set_app_key(test_config().dev_app_key);
 
     // Send request
     auto response = client.create_device_keys(request);
@@ -206,7 +207,7 @@ void test_create_device_keys(chirpstack_client& client, test_cache& cache) {
 void test_get_device_keys(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     get_device_keys_request request;
-    request.set_dev_eui(DEVICE_EUI);
+    request.set_dev_eui(test_config().dev_eui);
 
     // Send request
     auto response = client.get_device_keys(request);
@@ -219,7 +220,7 @@ void test_get_device_keys(chirpstack_client& client, test_cache& cache) {
     cache.device_keys = response.get().device_keys();
 
     // Display response
-    std::cout << "\tDevice " << cache.device_keys.dev_eui() << "\'s keys" << std::endl;
+    std::cout << "\tDevice " << cache.device_keys.dev_eui() << "'s keys" << std::endl;
     std::cout << "\t\tNetwork root key: " << cache.device_keys.nwk_key() << std::endl;
     std::cout << "\t\tApplication root key: " << cache.device_keys.app_key() << std::endl;
 }
@@ -242,7 +243,7 @@ void test_update_device_keys(chirpstack_client& client, test_cache& cache) {
 void test_delete_device_keys(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     delete_device_keys_request request;
-    request.set_dev_eui(DEVICE_EUI);
+    request.set_dev_eui(test_config().dev_eui);
 
     // Send request
     auto response = client.delete_device_keys(request);
@@ -255,12 +256,12 @@ void test_delete_device_keys(chirpstack_client& client, test_cache& cache) {
 void test_activate_device(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     activate_device_request request;
-    request.mutable_device_activation()->set_dev_eui(DEVICE_EUI);
-    request.mutable_device_activation()->set_dev_addr(DEVICE_ADDRESS);
-    request.mutable_device_activation()->set_app_s_key(APP_S_KEY);
-    request.mutable_device_activation()->set_nwk_s_enc_key(NWK_S_ENC_KEY);
-    request.mutable_device_activation()->set_s_nwk_s_int_key(S_NWK_INT_KEY);
-    request.mutable_device_activation()->set_f_nwk_s_int_key(F_NWK_INT_KEY);
+    request.mutable_device_activation()->set_dev_eui(test_config().dev_eui);
+    request.mutable_device_activation()->set_dev_addr(test_config().dev_address);
+    request.mutable_device_activation()->set_app_s_key(test_config().dev_app_s_key);
+    request.mutable_device_activation()->set_nwk_s_enc_key(test_config().dev_nwk_s_enc_key);
+    request.mutable_device_activation()->set_s_nwk_s_int_key(test_config().dev_s_nwk_int_key);
+    request.mutable_device_activation()->set_f_nwk_s_int_key(test_config().dev_f_nwk_int_key);
 
     // Send request
     auto response = client.activate_device(request);
@@ -273,7 +274,7 @@ void test_activate_device(chirpstack_client& client, test_cache& cache) {
 void test_deactivate_device(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     deactivate_device_request request;
-    request.set_dev_eui(DEVICE_EUI);
+    request.set_dev_eui(test_config().dev_eui);
 
     // Send request
     auto response = client.deactivate_device(request);
@@ -286,7 +287,7 @@ void test_deactivate_device(chirpstack_client& client, test_cache& cache) {
 void test_get_device_activation(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     get_device_activation_request request;
-    request.set_dev_eui(DEVICE_EUI);
+    request.set_dev_eui(test_config().dev_eui);
 
     // Send request
     auto response = client.get_device_activation(request);
@@ -299,7 +300,7 @@ void test_get_device_activation(chirpstack_client& client, test_cache& cache) {
     cache.device_activation = response.get().device_activation();
 
     // Display response
-    std::cout << "\tDevice " << cache.device_activation.dev_eui() << "\'s activation" << std::endl;
+    std::cout << "\tDevice " << cache.device_activation.dev_eui() << "'s activation" << std::endl;
     std::cout << "\t\tDevice address: " << cache.device_activation.dev_addr() << std::endl;
     std::cout << "\t\tApplication session key: " << cache.device_activation.app_s_key() << std::endl;
     std::cout << "\t\tNetwork session encryption key: " << cache.device_activation.nwk_s_enc_key() << std::endl;
@@ -310,7 +311,7 @@ void test_get_device_activation(chirpstack_client& client, test_cache& cache) {
 void test_get_random_dev_addr(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     get_random_dev_addr_request request;
-    request.set_dev_eui(DEVICE_EUI);
+    request.set_dev_eui(test_config().dev_eui);
 
     // Send request
     auto response = client.get_random_dev_addr(request);
@@ -326,10 +327,10 @@ void test_get_random_dev_addr(chirpstack_client& client, test_cache& cache) {
 void test_enqueue_device_queue_item(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     enqueue_device_queue_item_request request;
-    request.mutable_device_queue_item()->set_dev_eui(DEVICE_EUI);
+    request.mutable_device_queue_item()->set_dev_eui(test_config().dev_eui);
     request.mutable_device_queue_item()->set_confirmed(false);
-    request.mutable_device_queue_item()->set_f_port(F_PORT);
-    request.mutable_device_queue_item()->set_data(PAYLOAD);
+    request.mutable_device_queue_item()->set_f_port(test_config().dev_f_port);
+    request.mutable_device_queue_item()->set_data(test_config().dev_payload);
 
     // Send request
     auto response = client.enqueue_device_queue_item(request);
@@ -337,12 +338,15 @@ void test_enqueue_device_queue_item(chirpstack_client& client, test_cache& cache
         std::cerr << "Failed to enqueue device queue item: " << response.error_code() << std::endl;
         exit(EXIT_FAILURE);
     }
+
+    // Display response
+    std::cout << "\tEnqueue item #" << response.get().f_cnt() << std::endl;
 }
 
 void test_flush_device_queue(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     flush_device_queue_request request;
-    request.set_dev_eui(DEVICE_EUI);
+    request.set_dev_eui(test_config().dev_eui);
 
     // Send request
     auto response = client.flush_device_queue(request);
@@ -355,7 +359,7 @@ void test_flush_device_queue(chirpstack_client& client, test_cache& cache) {
 void test_list_device_queue_items(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     list_device_queue_items_request request;
-    request.set_dev_eui(DEVICE_EUI);
+    request.set_dev_eui(test_config().dev_eui);
 
     // Send request
     auto response = client.list_device_queue_items(request);
@@ -375,8 +379,8 @@ void test_list_device_queue_items(chirpstack_client& client, test_cache& cache) 
 
 int main(int argc, char** argv) {
     chirpstack_client_config config{};
-    config.jwt_token = JWT_TOKEN;
-    chirpstack_client client{APPLICATION_SERVER, config};
+    config.jwt_token = test_config().jwt_token;
+    chirpstack_client client{test_config().application_server, config};
     test_cache cache;
 
     std::cout << "GET SERVICE-PROFILE" << std::endl;

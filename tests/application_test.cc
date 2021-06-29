@@ -13,7 +13,7 @@ struct test_cache {
 void get_service_profile(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     get_service_profile_request request;
-    request.set_id(SERVICE_PROFILE_ID);
+    request.set_id(test_config().service_profile_id);
 
     // Send request
     auto response = client.get_service_profile(request);
@@ -29,8 +29,8 @@ void get_service_profile(chirpstack_client& client, test_cache& cache) {
 void test_create_application(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     create_application_request request;
-    request.mutable_application()->set_name(APPLICATION_NAME);
-    request.mutable_application()->set_description(APPLICATION_NAME);
+    request.mutable_application()->set_name(test_config().app_name);
+    request.mutable_application()->set_description(test_config().app_name);
     request.mutable_application()->set_organization_id(cache.service_profile.organization_id());
     request.mutable_application()->set_service_profile_id(cache.service_profile.id());
 
@@ -72,7 +72,7 @@ void test_update_application(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     update_application_request request;
     *request.mutable_application() = cache.application;
-    auto description = std::string(APPLICATION_NAME);
+    auto description = test_config().app_name;
     description += "-" + std::to_string(cache.application.id());
     request.mutable_application()->set_description(description);
 
@@ -122,8 +122,8 @@ void test_delete_application(chirpstack_client& client, test_cache& cache) {
 
 int main(int argc, char** argv) {
     chirpstack_client_config config{};
-    config.jwt_token = JWT_TOKEN;
-    chirpstack_client client{APPLICATION_SERVER, config};
+    config.jwt_token = test_config().jwt_token;
+    chirpstack_client client{test_config().application_server, config};
     test_cache cache;
 
     std::cout << "GET SERVICE-PROFILE" << std::endl;

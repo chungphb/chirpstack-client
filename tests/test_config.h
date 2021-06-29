@@ -4,46 +4,47 @@
 
 #pragma once
 
-#include <cstdint>
+#include <string>
+#include <vector>
 
-const char* APPLICATION_SERVER = "localhost:8080";
-const char* JWT_TOKEN =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiMWZmZTRjYzgtODMwZi00MGM0LTlhMzAtYTE5Nz"
-        "dkNjU2N2MyIiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTYyMzc1NDQzMSwic3ViIjoiYXBpX2tleSJ9.f--PhXYG"
-        "c61Kq_eMdf-ofxX8RUmNCDmtP9mauhzpq7k";
-const char* SERVICE_PROFILE_ID = "a3bdf1e5-7d10-4191-8f70-5cf7d446a0b2";
-const char* APPLICATION_NAME = "sample-application";
-const char* DEVICE_PROFILE_NAME = "sample-device-profile";
-const char* GATEWAY_PROFILE_NAME = "sample-gateway-profile";
-const char* DEVICE_EUI = "0001020304050607";
-const char* NWK_KEY = "000102030405060708090a0b0c0d0e0f";
-const char* APP_KEY = "000102030405060708090a0b0c0d0e0f";
-const char* DEVICE_ADDRESS = "00010203";
-const char* APP_S_KEY = "000102030405060708090a0b0c0d0e0f";
-const char* NWK_S_ENC_KEY = "000102030405060708090a0b0c0d0e0f";
-const char* S_NWK_INT_KEY = "000102030405060708090a0b0c0d0e0f";
-const char* F_NWK_INT_KEY = "000102030405060708090a0b0c0d0e0f";
-const uint32_t F_PORT = 10;
-const char* PAYLOAD = "packet_1234";
-const char* GATEWAY_ID = "0001020304050607";
-const char* GLOBAL_JWT_TOKEN =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5X2lkIjoiMDAxODQ2MDgtOWI0My00MjZkLWIyOGQ"
-        "tNDBlM2I3Y2MwZmU1IiwiYXVkIjoiYXMiLCJpc3MiOiJhcyIsIm5iZiI6MTYyNDUzMzQ5NCwic3ViIjoiYXBpX2t"
-        "leSJ9.LjLtatoAuOuab7hXMbhpXZuw8iPGQCt2lpTB1fEktVQ";
-const uint32_t FREQUENCY = 900000000;
-const uint32_t BANDWIDTH = 125;
-const uint32_t SPREADING_FACTORS[] = {7, 8, 9, 10, 11, 12};
-const char* USER = "sample@user.com";
-const char* PASSWORD = "password";
-const char* ORGANIZATION_NAME = "sample-organization";
-const char* ORGANIZATION_DISPLAY_NAME = "Sample Organization";
-const char* NETWORK_SERVER_NAME = "sample-network-server";
-const char* NETWORK_SERVER_SERVER = "0.0.0.0:8500";
-const char* SERVICE_PROFILE_NAME = "sample-service-profile";
-const char* MULTICAST_GROUP_NAME = "sample-multicast-group";
-const char* MULTICAST_ADDRESS = "0a0b0c0d";
-const char* MC_NWK_S_KEY = "0f0e0d0c0b0a09080706050403020100";
-const char* MC_APP_S_KEY = "0f0e0d0c0b0a09080706050403020100";
-const char* ADMIN_USER = "admin";
-const char* ADMIN_PASSWORD = "admin";
-const char* API_KEY_NAME = "sample-api-key";
+struct test_config {
+    std::string application_server = "localhost::8080";
+    std::string jwt_token;
+    std::string service_profile_id;
+    std::string global_jwt_token;
+    std::string app_name = "sample-application";
+    std::string dev_eui = "0001020304050607";
+    std::string dev_nwk_key = "000102030405060708090a0b0c0d0e0f";
+    std::string dev_app_key = "000102030405060708090a0b0c0d0e0f";
+    std::string dev_address = "00010203";
+    std::string dev_app_s_key = "000102030405060708090a0b0c0d0e0f";
+    std::string dev_nwk_s_enc_key = "000102030405060708090a0b0c0d0e0f";
+    std::string dev_s_nwk_int_key = "000102030405060708090a0b0c0d0e0f";
+    std::string dev_f_nwk_int_key = "000102030405060708090a0b0c0d0e0f";
+    int dev_f_port = 10;
+    std::string dev_payload = "packet_1234";
+    std::string dp_name = "sample-device-profile";
+    std::string gtw_id = "0001020304050607";
+    std::string gp_name = "sample-gateway-profile";
+    int gp_bandwidth = 125;
+    int gp_frequency = 900000000;
+    std::vector<int> gp_spreading_factors = {7, 8, 9, 10, 11, 12};
+    std::string admin_username = "admin";
+    std::string admin_password = "admin";
+    std::string api_key_name = "sample-api-key";
+    std::string mc_name = "sample-multicast-group";
+    std::string mc_address = "0a0b0c0d";
+    std::string mc_app_s_key = "0f0e0d0c0b0a09080706050403020100";
+    std::string mc_nwk_s_key = "0f0e0d0c0b0a09080706050403020100";
+    std::string ns_name = "sample-network-server";
+    std::string ns_server = "0.0.0.0:8500";
+    std::string org_name = "sample-organization";
+    std::string org_display_name = "Sample Organization";
+    std::string sp_name = "sample-service-profile";
+    std::string usr_username = "sample@user.com";
+    std::string usr_password = "password";
+    test_config();
+    void parse();
+};
+
+test_config& test_config();

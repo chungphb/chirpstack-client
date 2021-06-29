@@ -15,9 +15,9 @@ void test_create_user(chirpstack_client& client, test_cache& cache) {
     request.mutable_user()->set_session_ttl(60);
     request.mutable_user()->set_is_admin(false);
     request.mutable_user()->set_is_active(true);
-    request.mutable_user()->set_email(USER);
-    request.mutable_user()->set_note(USER);
-    request.set_password(PASSWORD);
+    request.mutable_user()->set_email(test_config().usr_username);
+    request.mutable_user()->set_note(test_config().usr_username);
+    request.set_password(test_config().usr_password);
 
     // Send request
     auto response = client.create_user(request);
@@ -46,8 +46,8 @@ void test_get_user(chirpstack_client& client, test_cache& cache) {
     cache.user = response.get().user();
 
     // Display response
-    std::cout << "\tUser " << cache.user.id() << std::endl;
-    std::cout << "\t\tEmail: " << cache.user.email() << std::endl;
+    std::cout << "\tUser " << cache.user.email() << std::endl;
+    std::cout << "\t\tEmail: " << cache.user.id() << std::endl;
     std::cout << "\t\tIs admin: " << std::boolalpha << cache.user.is_admin() << std::endl;
     std::cout << "\t\tIs active: " << std::boolalpha << cache.user.is_active() << std::endl;
     std::cout << "\t\tSession timeout: " << cache.user.session_ttl() << std::endl;
@@ -82,8 +82,8 @@ void test_list_user(chirpstack_client& client, test_cache& cache) {
 
     // Display response
     for (const auto& user : response.get().result()) {
-        std::cout << "\tUser " << user.id() << std::endl;
-        std::cout << "\t\tEmail: " << user.email() << std::endl;
+        std::cout << "\tUser " << user.email() << std::endl;
+        std::cout << "\t\tID: " << user.id() << std::endl;
         std::cout << "\t\tIs admin: " << std::boolalpha << user.is_admin() << std::endl;
         std::cout << "\t\tIs active: " << std::boolalpha << user.is_active() << std::endl;
         std::cout << "\t\tSession timeout: " << user.session_ttl() << std::endl;
@@ -107,7 +107,7 @@ void test_update_user_password(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     update_user_password_request request;
     request.set_user_id(cache.user_id);
-    auto password = std::string(PASSWORD) + "123";
+    auto password = test_config().usr_password + "123";
     request.set_password(password);
 
     // Send request
@@ -120,8 +120,8 @@ void test_update_user_password(chirpstack_client& client, test_cache& cache) {
 
 int main(int argc, char** argv) {
     chirpstack_client_config config{};
-    config.jwt_token = GLOBAL_JWT_TOKEN;
-    chirpstack_client client{APPLICATION_SERVER, config};
+    config.jwt_token = test_config().global_jwt_token;
+    chirpstack_client client{test_config().application_server, config};
     test_cache cache;
 
     std::cout << "TEST CREATE USER" << std::endl;

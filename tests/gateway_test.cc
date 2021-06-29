@@ -12,7 +12,7 @@ struct test_cache {
 void get_service_profile(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     get_service_profile_request request;
-    request.set_id(SERVICE_PROFILE_ID);
+    request.set_id(test_config().service_profile_id);
 
     // Send request
     auto response = client.get_service_profile(request);
@@ -28,9 +28,9 @@ void get_service_profile(chirpstack_client& client, test_cache& cache) {
 void test_create_gateway(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     create_gateway_request request;
-    request.mutable_gateway()->set_id(GATEWAY_ID);
-    request.mutable_gateway()->set_name(GATEWAY_ID);
-    request.mutable_gateway()->set_description(GATEWAY_ID);
+    request.mutable_gateway()->set_id(test_config().gtw_id);
+    request.mutable_gateway()->set_name(test_config().gtw_id);
+    request.mutable_gateway()->set_description(test_config().gtw_id);
     request.mutable_gateway()->mutable_location()->set_latitude(0);
     request.mutable_gateway()->mutable_location()->set_longitude(0);
     request.mutable_gateway()->mutable_location()->set_altitude(0);
@@ -51,7 +51,7 @@ void test_create_gateway(chirpstack_client& client, test_cache& cache) {
 void test_get_gateway(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     get_gateway_request request;
-    request.set_id(GATEWAY_ID);
+    request.set_id(test_config().gtw_id);
 
     // Send request
     auto response = client.get_gateway(request);
@@ -78,7 +78,7 @@ void test_update_gateway(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     update_gateway_request request;
     *request.mutable_gateway() = cache.gateway;
-    auto description = std::string(GATEWAY_ID);
+    auto description = test_config().gtw_id;
     description += "-" + std::to_string(cache.gateway.organization_id());
     description += "-" + std::to_string(cache.gateway.network_server_id());
     request.mutable_gateway()->set_description(description);
@@ -120,7 +120,7 @@ void test_list_gateway(chirpstack_client& client, test_cache& cache) {
 void test_delete_gateway(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     delete_gateway_request request;
-    request.set_id(GATEWAY_ID);
+    request.set_id(test_config().gtw_id);
 
     // Send request
     auto response = client.delete_gateway(request);
@@ -133,7 +133,7 @@ void test_delete_gateway(chirpstack_client& client, test_cache& cache) {
 void test_get_gateway_stats(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     get_gateway_stats_request request;
-    request.set_gateway_id(GATEWAY_ID);
+    request.set_gateway_id(test_config().gtw_id);
     request.set_interval("minute");
     request.mutable_start_timestamp()->set_seconds(0);
     request.mutable_end_timestamp()->set_seconds(120);
@@ -146,7 +146,7 @@ void test_get_gateway_stats(chirpstack_client& client, test_cache& cache) {
     }
 
     // Display response
-    std::cout << "\tGateway " << GATEWAY_ID  << "'s stats" << std::endl;
+    std::cout << "\tGateway " << test_config().gtw_id  << "'s stats" << std::endl;
     for (const auto& stat : response.get().result()) {
         std::cout << "\t\tTimestamp: " << stat.timestamp().seconds() << std::endl;
         std::cout << "\t\t\tPackets received: " << stat.rx_packets_received() << std::endl;
@@ -159,13 +159,13 @@ void test_get_gateway_stats(chirpstack_client& client, test_cache& cache) {
 void test_get_last_ping(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     get_last_ping_request request;
-    request.set_gateway_id(GATEWAY_ID);
+    request.set_gateway_id(test_config().gtw_id);
 
     // Send request
     auto response = client.get_last_ping(request);
     if (!response.is_valid()) {
         if (response.error_code() == grpc::StatusCode::NOT_FOUND) {
-            std::cout << "Warning: Have not received any ping from gateway " << GATEWAY_ID << std::endl;
+            std::cout << "Warning: Have not received any ping from gateway " << test_config().gtw_id << std::endl;
             return;
         } else {
             std::cerr << "Failed to get last ping: " << response.error_code() << std::endl;
@@ -174,7 +174,7 @@ void test_get_last_ping(chirpstack_client& client, test_cache& cache) {
     }
 
     // Display response
-    std::cout << "\tGateway " << GATEWAY_ID  << "'s last ping" << std::endl;
+    std::cout << "\tGateway " << test_config().gtw_id  << "'s last ping" << std::endl;
     std::cout << "\t\tCreated at: " << response.get().created_at().seconds() << std::endl;
     std::cout << "\t\tFrequency: " << response.get().frequency() << std::endl;
     std::cout << "\t\tData-rate: " << response.get().dr() << std::endl;
@@ -190,7 +190,7 @@ void test_get_last_ping(chirpstack_client& client, test_cache& cache) {
 void test_generate_gateway_client_certificate(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     generate_gateway_client_certificate_request request;
-    request.set_gateway_id(GATEWAY_ID);
+    request.set_gateway_id(test_config().gtw_id);
 
     // Send request
     auto response = client.generate_gateway_client_certificate(request);
@@ -207,7 +207,7 @@ void test_generate_gateway_client_certificate(chirpstack_client& client, test_ca
     }
 
     // Display response
-    std::cout << "\tGateway " << GATEWAY_ID  << "'s client certificate" << std::endl;
+    std::cout << "\tGateway " << test_config().gtw_id  << "'s client certificate" << std::endl;
     std::cout << "\t\tTLS certificate: " << response.get().tls_cert() << std::endl;
     std::cout << "\t\tTLS key: " << response.get().tls_key() << std::endl;
     std::cout << "\t\tCA certificate: " << response.get().ca_cert() << std::endl;
@@ -216,8 +216,8 @@ void test_generate_gateway_client_certificate(chirpstack_client& client, test_ca
 
 int main(int argc, char** argv) {
     chirpstack_client_config config{};
-    config.jwt_token = JWT_TOKEN;
-    chirpstack_client client{APPLICATION_SERVER, config};
+    config.jwt_token = test_config().jwt_token;
+    chirpstack_client client{test_config().application_server, config};
     test_cache cache;
 
     std::cout << "GET SERVICE-PROFILE" << std::endl;

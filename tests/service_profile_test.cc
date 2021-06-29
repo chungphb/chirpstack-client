@@ -24,7 +24,7 @@ void generate_bash_files() {
         ofs.open("start-sample-network-server.sh", std::ofstream::out | std::ofstream::trunc);
         ofs << R"(#!/bin/bash)" << '\n';
         ofs << R"(chirpstack-network-server configfile > sample-ns-config.toml)" << '\n';
-        ofs << R"(sed -i -E "s/bind=\".+\"/bind=\")" << NETWORK_SERVER_SERVER << R"(\"/" sample-ns-config.toml)" << '\n';
+        ofs << R"(sed -i -E "s/bind=\".+\"/bind=\")" << test_config().ns_server << R"(\"/" sample-ns-config.toml)" << '\n';
         ofs << R"(sed -i -E "s/dsn=\".*\"/dsn=\")";
         ofs << R"(postgres:\/\/sample_ns:sample_ns@localhost\/sample_ns?sslmode=disable)";
         ofs << R"(\"/" sample-ns-config.toml)" << '\n';
@@ -55,8 +55,8 @@ void generate_bash_files() {
 void create_network_server(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     create_network_server_request request;
-    request.mutable_network_server()->set_name(NETWORK_SERVER_NAME);
-    request.mutable_network_server()->set_server(NETWORK_SERVER_SERVER);
+    request.mutable_network_server()->set_name(test_config().ns_name);
+    request.mutable_network_server()->set_server(test_config().ns_server);
     request.mutable_network_server()->set_gateway_discovery_enabled(true);
     request.mutable_network_server()->set_gateway_discovery_interval(24);
     request.mutable_network_server()->set_gateway_discovery_tx_frequency(960000000);
@@ -89,8 +89,8 @@ void delete_network_server(chirpstack_client& client, test_cache& cache) {
 void create_organization(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     create_organization_request request;
-    request.mutable_organization()->set_name(ORGANIZATION_NAME);
-    request.mutable_organization()->set_display_name(ORGANIZATION_DISPLAY_NAME);
+    request.mutable_organization()->set_name(test_config().org_name);
+    request.mutable_organization()->set_display_name(test_config().org_display_name);
     request.mutable_organization()->set_can_have_gateways(true);
     request.mutable_organization()->set_max_gateway_count(10);
     request.mutable_organization()->set_max_device_count(100);
@@ -122,7 +122,7 @@ void delete_organization(chirpstack_client& client, test_cache& cache) {
 void test_create_service_profile(chirpstack_client& client, test_cache& cache) {
     // Prepare request
     create_service_profile_request request;
-    request.mutable_service_profile()->set_name(SERVICE_PROFILE_NAME);
+    request.mutable_service_profile()->set_name(test_config().sp_name);
     request.mutable_service_profile()->set_organization_id(cache.organization_id);
     request.mutable_service_profile()->set_network_server_id(cache.network_server_id);
     request.mutable_service_profile()->set_dr_min(0);
@@ -214,8 +214,8 @@ void test_delete_service_profile(chirpstack_client& client, test_cache& cache) {
 
 int main(int argc, char** argv) {
     chirpstack_client_config config{};
-    config.jwt_token = GLOBAL_JWT_TOKEN;
-    chirpstack_client client{APPLICATION_SERVER, config};
+    config.jwt_token = test_config().global_jwt_token;
+    chirpstack_client client{test_config().application_server, config};
     test_cache cache;
 
     generate_bash_files();
