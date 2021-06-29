@@ -136,6 +136,7 @@ void test_config::parse() {
 
     val = config.find("test.gateway_profile.spreading_factors");
     if (val && val->is<toml::Array>()) {
+        gp_spreading_factors.clear();
         for (const toml::Value& s_factor : val->as<toml::Array>()) {
             if (s_factor.is<int>()) {
                 gp_spreading_factors.push_back(s_factor.as<int>());

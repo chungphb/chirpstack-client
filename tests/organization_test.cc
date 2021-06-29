@@ -234,7 +234,30 @@ void test_delete_organization_user(chirpstack_client& client, test_cache& cache)
     }
 }
 
+void validate_config() {
+    if (test_config().application_server.empty()) {
+        throw std::runtime_error("Invalid application server");
+    }
+    if (test_config().global_jwt_token.empty()) {
+        throw std::runtime_error("Invalid global JWT token");
+    }
+    if (test_config().org_name.empty()) {
+        throw std::runtime_error("Invalid organization name");
+    }
+    if (test_config().org_display_name.empty()) {
+        throw std::runtime_error("Invalid organization server");
+    }
+    if (test_config().usr_username.empty()) {
+        throw std::runtime_error("Invalid user username");
+    }
+    if (test_config().usr_password.empty()) {
+        throw std::runtime_error("Invalid user password");
+    }
+}
+
 int main(int argc, char** argv) {
+    validate_config();
+
     chirpstack_client_config config{};
     config.jwt_token = test_config().global_jwt_token;
     chirpstack_client client{test_config().application_server, config};

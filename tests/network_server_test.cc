@@ -166,7 +166,24 @@ void test_get_adr_algorithms(chirpstack_client& client, test_cache& cache) {
     }
 }
 
+void validate_config() {
+    if (test_config().application_server.empty()) {
+        throw std::runtime_error("Invalid application server");
+    }
+    if (test_config().global_jwt_token.empty()) {
+        throw std::runtime_error("Invalid global JWT token");
+    }
+    if (test_config().ns_name.empty()) {
+        throw std::runtime_error("Invalid network-server name");
+    }
+    if (test_config().ns_server.empty()) {
+        throw std::runtime_error("Invalid network-server server");
+    }
+}
+
 int main(int argc, char** argv) {
+    validate_config();
+
     chirpstack_client_config config{};
     config.jwt_token = test_config().global_jwt_token;
     chirpstack_client client{test_config().application_server, config};

@@ -270,7 +270,30 @@ void test_get_gateways_summary(chirpstack_client& client, test_cache& cache) {
     std::cout << "\tNever seen count: " << response.get().inactive_count() << std::endl;
 }
 
+void validate_config() {
+    if (test_config().application_server.empty()) {
+        throw std::runtime_error("Invalid application server");
+    }
+    if (test_config().jwt_token.empty()) {
+        throw std::runtime_error("Invalid JWT token");
+    }
+    if (test_config().service_profile_id.empty()) {
+        throw std::runtime_error("Invalid service-profile ID");
+    }
+    if (test_config().admin_username.empty()) {
+        throw std::runtime_error("Invalid admin username");
+    }
+    if (test_config().admin_password.empty()) {
+        throw std::runtime_error("Invalid admin password");
+    }
+    if (test_config().api_key_name.empty()) {
+        throw std::runtime_error("Invalid API key name");
+    }
+}
+
 int main(int argc, char** argv) {
+    validate_config();
+
     chirpstack_client_config config{};
     chirpstack_client client{test_config().application_server, config};
     test_cache cache;

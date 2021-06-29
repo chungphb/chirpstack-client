@@ -377,7 +377,46 @@ void test_list_device_queue_items(chirpstack_client& client, test_cache& cache) 
     }
 }
 
+void validate_config() {
+    if (test_config().application_server.empty()) {
+        throw std::runtime_error("Invalid application server");
+    }
+    if (test_config().jwt_token.empty()) {
+        throw std::runtime_error("Invalid JWT token");
+    }
+    if (test_config().service_profile_id.empty()) {
+        throw std::runtime_error("Invalid service-profile ID");
+    }
+    if (test_config().app_name.empty()) {
+        throw std::runtime_error("Invalid application name");
+    }
+    if (test_config().dp_name.empty()) {
+        throw std::runtime_error("Invalid device-profile name");
+    }
+    if (test_config().dev_eui.empty()) {
+        throw std::runtime_error("Invalid device EUI");
+    }
+    if (test_config().dev_nwk_key.empty() || test_config().dev_app_key.empty()) {
+        throw std::runtime_error("Invalid device key");
+    }
+    if (test_config().dev_address.empty()) {
+        throw std::runtime_error("Invalid device address");
+    }
+    if (test_config().dev_app_s_key.empty() || test_config().dev_nwk_s_enc_key.empty()
+        || test_config().dev_s_nwk_int_key.empty() || test_config().dev_f_nwk_int_key.empty()) {
+        throw std::runtime_error("Invalid device session key");
+    }
+    if (test_config().dev_f_port < 0) {
+        throw std::runtime_error("Invalid device f-port");
+    }
+    if (test_config().dev_payload.empty()) {
+        throw std::runtime_error("Invalid device payload");
+    }
+}
+
 int main(int argc, char** argv) {
+    validate_config();
+
     chirpstack_client_config config{};
     config.jwt_token = test_config().jwt_token;
     chirpstack_client client{test_config().application_server, config};

@@ -151,7 +151,39 @@ void test_delete_gateway_profile(chirpstack_client& client, test_cache& cache) {
     }
 }
 
+void validate_config() {
+    if (test_config().application_server.empty()) {
+        throw std::runtime_error("Invalid application server");
+    }
+    if (test_config().global_jwt_token.empty()) {
+        throw std::runtime_error("Invalid global JWT token");
+    }
+    if (test_config().service_profile_id.empty()) {
+        throw std::runtime_error("Invalid service-profile ID");
+    }
+    if (test_config().gp_name.empty()) {
+        throw std::runtime_error("Invalid gateway-profile name");
+    }
+    if (test_config().gp_bandwidth < 0) {
+        throw std::runtime_error("Invalid gateway-profile bandwidth");
+    }
+    if (test_config().gp_frequency < 0) {
+        throw std::runtime_error("Invalid gateway-profile frequency");
+    }
+    if (test_config().gp_spreading_factors.size() == 0) {
+        throw std::runtime_error("Invalid gateway-profile spreading-factors");
+    } else {
+        for (const auto& spreading_factor : test_config().gp_spreading_factors) {
+            if (spreading_factor < 0) {
+                throw std::runtime_error("Invalid gateway-profile spreading-factor");
+            }
+        }
+    }
+}
+
 int main(int argc, char** argv) {
+    validate_config();
+
     chirpstack_client_config config{};
     config.jwt_token = test_config().global_jwt_token;
     chirpstack_client client{test_config().application_server, config};

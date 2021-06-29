@@ -121,7 +121,24 @@ void test_delete_device_profile(chirpstack_client& client, test_cache& cache) {
     }
 }
 
+void validate_config() {
+    if (test_config().application_server.empty()) {
+        throw std::runtime_error("Invalid application server");
+    }
+    if (test_config().jwt_token.empty()) {
+        throw std::runtime_error("Invalid JWT token");
+    }
+    if (test_config().service_profile_id.empty()) {
+        throw std::runtime_error("Invalid service-profile ID");
+    }
+    if (test_config().dp_name.empty()) {
+        throw std::runtime_error("Invalid device-profile name");
+    }
+}
+
 int main(int argc, char** argv) {
+    validate_config();
+
     chirpstack_client_config config{};
     config.jwt_token = test_config().jwt_token;
     chirpstack_client client{test_config().application_server, config};
