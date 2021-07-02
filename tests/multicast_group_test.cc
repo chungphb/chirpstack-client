@@ -1,3 +1,7 @@
+//
+// Created by vht on 6/24/21.
+//
+
 #include "test_config.h"
 #include <chirpstack_client/chirpstack_client.h>
 #include <iostream>
@@ -378,6 +382,9 @@ void validate_config() {
     }
     if (test_config().dev_payload.empty()) {
         throw std::runtime_error("Invalid device payload");
+    }
+    if (test_config().mc_name.empty()) {
+        throw std::runtime_error("Invalid multicast-group name");
     }
     if (test_config().mc_address.empty()) {
         throw std::runtime_error("Invalid multicast-group address");

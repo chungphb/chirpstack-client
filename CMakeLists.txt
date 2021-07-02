@@ -1,11 +1,11 @@
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.15)
 project(basic_grpc)
 
 # Support C++ 14
 set(CMAKE_CXX_STANDARD 14)
 
 ## Enable testing targets
-option(ChirpStackClient_TESTING "Enable testing targets" ON)
+option(ChirpStackClient_TESTING "Enable testing targets" OFF)
 
 # Find Threads package
 find_package(Threads)
@@ -69,7 +69,7 @@ foreach(google_proto ${google_protos})
     list(APPEND google_grpc_hdrs ${current_grpc_hdrs})
 endforeach()
 
-# Generate Chirpstack API
+# Generate ChirpStack API
 get_filename_component(chirpstack_proto_dir "modules/chirpstack-api/protobuf/" ABSOLUTE)
 file(GLOB_RECURSE chirpstack_protos RELATIVE ${chirpstack_proto_dir} ${chirpstack_proto_dir}/*.proto)
 set(chirpstack_proto_srcs "")
@@ -103,7 +103,7 @@ endforeach()
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 # Create chirpstack_grpc_proto target
-add_library(chirpstack_grpc_proto
+add_library(chirpstack_grpc_proto SHARED
         ${chirpstack_proto_srcs}
         ${chirpstack_proto_hdrs}
         ${chirpstack_grpc_srcs}
@@ -126,7 +126,7 @@ set(chirpstack_client_srcs
 set(chirpstack_client_hdrs
         "include/chirpstack_client/chirpstack_client.h"
         "include/chirpstack_client/messages.h")
-add_library(chirpstack_client
+add_library(chirpstack_client SHARED
         ${chirpstack_client_srcs}
         ${chirpstack_client_hdrs})
 target_link_libraries(chirpstack_client
